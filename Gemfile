@@ -1,6 +1,7 @@
-#source 'http://rubygems.org'
-require "rubygems"
-require "bundler/setup"
+source 'http://rubygems.org'
+
+#require "rubygems"
+#require "bundler/setup"
 
 gem 'rails', '3.1.3'
 
@@ -19,6 +20,8 @@ group :assets do
 end
 
 gem 'jquery-rails'
+
+gem 'anjlab-bootstrap-rails', :require => 'bootstrap-rails'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
