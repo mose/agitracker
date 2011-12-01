@@ -5,6 +5,11 @@ This is an experimental tool that I use as a pretext for practicing some Ruby on
 The main idea is to setup a tracker from agile family, a quick todo backlog listing with 
 fast item manipulation. 
 
+Environment
+------------------
+* ruby 1.9.7
+* rails 3.1.3
+
 
 License
 ------------------
