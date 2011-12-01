@@ -1,4 +1,6 @@
-source 'http://rubygems.org'
+#source 'http://rubygems.org'
+require "rubygems"
+require "bundler/setup"
 
 gem 'rails', '3.1.3'
 
@@ -6,6 +8,7 @@ gem 'rails', '3.1.3'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
+gem 'mysql2'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -38,8 +41,7 @@ end
 
 group :tests do
 	gem 'turn', :require => false
-	gem 'rspec'
-	gem 'rspec-rails'
+	gem 'rspec-rails', :require => 'rspec'
 	gem 'spork'
 	gem 'factory_girl_rails'
 end
