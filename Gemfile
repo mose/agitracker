@@ -46,5 +46,7 @@ group :tests do
 	gem 'turn', :require => false
 	gem 'rspec-rails', :require => 'rspec'
 	gem 'spork'
+	gem "webrat"
+	gem 'simplecov'
 	gem 'factory_girl_rails'
 end

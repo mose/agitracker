@@ -1,10 +1,18 @@
 require 'rubygems'
 require 'spork'
 
+# simplecov don't seem to work with spork
+# so for running it, optionaly, I just run
+# COV=1 rspec spec
+require 'simplecov'
+SimpleCov.start 'rails' if ENV['COV']
+
+
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However,
   # if you change any configuration or code from libraries loaded here, you'll
   # need to restart spork for it take effect.
+
 
 end
 

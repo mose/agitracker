@@ -7,6 +7,10 @@ describe PagesController do
       get 'home'
       response.should be_success
     end
+# 		it "displays a page" do
+# 			get 'home'
+# 			response.should have_selector("title","")
+# 		end
   end
 
   describe "GET 'contact'" do

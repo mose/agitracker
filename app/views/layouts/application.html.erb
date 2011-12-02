@@ -1,14 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Agitracker</title>
-  <%= stylesheet_link_tag    "application" %>
-  <%= javascript_include_tag "application" %>
+	<meta charset="utf-8">
+  <title>Agitracker: <%= @title %></title>
+	<meta name="description" content="agitracker test application.">
+	<meta name="author" content="Mose">
+
+  <%= stylesheet_link_tag    :application %>
+  <%= javascript_include_tag :application %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
+<div class="container">
+<%= render 'layouts/header' %>
+
+<section class="round">
+<% flash.each do |key, value| %>
+<div class="flash <%= key %>"><%= value %></div>
+<% end %>
+
 <%= yield %>
+
+</section>
+
+<%= render 'layouts/footer' %>
+<%= debug(params) if Rails.env.development? %>
+</div>
 
 </body>
 </html>
