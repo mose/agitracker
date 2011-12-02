@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'spork'
+require 'watir-webdriver'
 
 # simplecov don't seem to work with spork
 # so for running it, optionaly, I just run

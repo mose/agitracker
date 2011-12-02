@@ -2,15 +2,19 @@ require 'spec_helper'
 
 describe PagesController do
 
+  before :all do
+    @browser = Watir::Browser.new 
+  end
+
   describe "GET 'home'" do
     it "returns http success" do
       get 'home'
       response.should be_success
     end
-# 		it "displays a page" do
-# 			get 'home'
-# 			response.should have_selector("title","")
-# 		end
+     it "displays a page with text" do
+       @browser.goto 'localhost:3000/'
+	     @browser.text.include?('Home').should == true
+     end
   end
 
   describe "GET 'contact'" do

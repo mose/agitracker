@@ -40,13 +40,18 @@ group :development do
 	gem 'log_buddy'
 	gem 'annotate'
 	gem 'faker'
+	gem "rails_best_practices"
 end
 
 group :tests do
 	gem 'turn', :require => false
 	gem 'rspec-rails', :require => 'rspec'
 	gem 'spork'
-	gem "webrat"
-	gem 'simplecov'
+	
+	# http://watirwebdriver.com/ as an alternative to webrat
+	gem "watir-webdriver" 
+	# gem "webrat"
+
+	gem 'simplecov' 
 	gem 'factory_girl_rails'
 end
