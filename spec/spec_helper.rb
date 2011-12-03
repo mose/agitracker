@@ -28,16 +28,20 @@ Spork.prefork do
     config.infer_base_class_for_anonymous_controllers = false
   end
   # hack for loading db in memory
-  config = YAML::load(IO.read(Rails.root.join("config/database.yml")))
-  ActiveRecord::Base.establish_connection(config["test"])
-  load(Rails.root.join("db/schema.rb"))
-  load(Rails.root.join("db/seeds.rb"))
+#   config = YAML::load(IO.read(Rails.root.join("config/database.yml")))
+#   ActiveRecord::Base.establish_connection(config["test"])
+#   load(Rails.root.join("db/schema.rb"))
+#   load(Rails.root.join("db/seeds.rb"))
 
 end
 
 Spork.each_run do
   # This code will be run each time you run your specs.
-
+  # Factory reloading
+  #Factory.factories.clear
+  #Dir[Rails.root.join("spec/factories/**/*.rb")].each{|f| load f}
+  # routes reload
+  #Agitracker::Application.reload_routes!
 end
 
 # --- Instructions ---
@@ -107,6 +111,7 @@ RSpec.configure do |config|
   # hack for loading db in memory
   config = YAML::load(IO.read(Rails.root.join("config/database.yml")))
   ActiveRecord::Base.establish_connection(config["test"])
+  ActiveRecord::Schema.verbose = false
   load(Rails.root.join("db/schema.rb"))
   load(Rails.root.join("db/seeds.rb"))
 

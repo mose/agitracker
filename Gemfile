@@ -10,6 +10,7 @@ gem 'rails', '3.1.3'
 
 gem 'sqlite3'
 gem 'mysql2'
+gem 'bluecloth'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -47,6 +48,8 @@ group :tests do
 	gem 'turn'
 	gem 'rspec-rails', :require => 'rspec'
 	gem 'spork'
+  gem 'rb-fsevent'
+  gem 'guard-spork'
 	# http://watirwebdriver.com/ as webdriver
 	# gem 'watir-webdriver' 
   # https://github.com/jeffkreeftmeijer/fuubar for alt formatting of rspec output
