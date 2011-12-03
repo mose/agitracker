@@ -2,7 +2,7 @@
 
 <%= form_tag :action => "update", :controller => "admin/pages", :id => @page.id %>
 
-<%= render :partial => "form", :locals => { :page => @page } %>
+<%= render "form", :page => @page %>
 
 </form>
 

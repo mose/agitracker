@@ -7,7 +7,7 @@
 
       <ul class="nav">
         <% %w{home about contact}.each do |p| %>
-        <li<%= %{ class=\"active\"}.html_safe if (!@page.nil? and @page.name === p) %>><%= link_to p.capitalize, page_path(p) %></li>
+        <li<%= %{ class="active"}.html_safe if (!page.nil? and page.name === p) %>><%= link_to p.capitalize, page_path(p) %></li>
         <% end %>
       </ul>
     </div>

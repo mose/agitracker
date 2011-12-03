@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Agitracker: <%= @title.capitalize %></title>
+  <title>Agitracker<%= ': ' + @title.capitalize unless @title.nil? %></title>
   <meta name="description" content="agitracker test application.">
   <meta name="author" content="Mose">
 
@@ -13,7 +13,7 @@
 <body>
 
 <div class="container">
-<%= render 'layouts/header' %>
+<%= render 'layouts/header', :page => @page %>
 
 <section class="round">
 <% flash.each do |key, value| %>

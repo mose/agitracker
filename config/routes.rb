@@ -5,7 +5,7 @@ Agitracker::Application.routes.draw do
   end
 
   match'/pages/:name' => 'pages#show', :as => "page"
-  
+
   root :to => 'pages#show', :name => "home"
 
 

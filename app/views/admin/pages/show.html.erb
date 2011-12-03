@@ -1,7 +1,22 @@
-<div>
+<div class="row">
+<div class="span16">
+<ul>
+<li><%= link_to "List", admin_pages_path  %></li>
+<li><%= link_to "Edit", edit_admin_page_path(@page.id) %></li>
+<li><%= link_to "delete", :item => @page.id, confirm: "Are you sure ?", method: :delete %></li>
+</ul>
+</div>
+</div>
 
+
+<div class="row">
+
+<div class="span5">
 <h3><%= @page.title %></h3>
+</div>
 
-<div><%= @page.html %></div>
+<div class="span11">
+<%= @page.html.html_safe %>
+</div>
 
 </div>

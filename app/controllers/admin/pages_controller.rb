@@ -1,4 +1,5 @@
 class Admin::PagesController < ApplicationController
+  before_filter :get_page_from_id, :only => [ :show, :edit, :update ]
 
   def index
     @pages = Page.all
@@ -6,7 +7,6 @@ class Admin::PagesController < ApplicationController
   end
 
   def show
-    @page = Page.find(params[:name])
     @title = "Show " + @page.name
   end
 
@@ -21,21 +21,25 @@ class Admin::PagesController < ApplicationController
   end
 
   def edit
-    @page = Page.find(params[:id])
   end
 
   def update
-    @page = Page.find(params[:id])
     if @page.update_attributes(params[:page])
       flash[:success] = "ok, saved."
-      redirect_to :action => "show", :id => @page.id
+      redirect_to :show, :id => @page.id
     else
       flash[:failure] = "failed to save"
-      render :action => "edit"
+      render :edit
     end
   end
 
-  def delete
+  def destroy
+  end
+
+  private
+
+  def get_page_from_id
+    @page = Page.find(params[:id])
   end
 
 end

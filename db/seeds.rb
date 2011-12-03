@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-page_home = Page.create([ 
+page_home = Page.create([
 { name: 'home',
   title: "Home page",
   content: "This is the homepage, customize it in /admin/page/home/edit"
