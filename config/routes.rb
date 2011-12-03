@@ -1,12 +1,13 @@
 Agitracker::Application.routes.draw do
 
-  root :to => 'pages#home'
-
-  resources :pages
-
-  namespace :admin do
+  namespace :admin, :as => 'admin' do
     resources :pages
   end
+
+  match'/pages/:name' => 'pages#show', :as => "page"
+  
+  root :to => 'pages#show', :name => "home"
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -6,9 +6,9 @@
       <%= link_to "agitracker", root_path, :class => "brand" %></a>
 
       <ul class="nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <% %w{home about contact}.each do |p| %>
+        <li<%= %{ class=\"active\"}.html_safe if (!@page.nil? and @page.name === p) %>><%= link_to p.capitalize, page_path(p) %></li>
+        <% end %>
       </ul>
     </div>
   </div>

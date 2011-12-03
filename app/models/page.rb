@@ -11,7 +11,7 @@ class Page < ActiveRecord::Base
   
 
   def html
-    BlueCloth.new(this.content).to_html
+    BlueCloth.new(self.content).to_html
   end
 
 end

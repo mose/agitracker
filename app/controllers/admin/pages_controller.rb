@@ -2,14 +2,17 @@ class Admin::PagesController < ApplicationController
 
   def index
     @pages = Page.all
+    @title = "Pages list"
   end
 
   def show
     @page = Page.find(params[:name])
+    @title = "Show " + @page.name
   end
 
   def new
     @page = Page.new
+    @title = "New page"
   end
 
   def create
