@@ -27,6 +27,12 @@ Spork.prefork do
     config.use_transactional_fixtures = true
     config.infer_base_class_for_anonymous_controllers = false
   end
+  # hack for loading db in memory
+  config = YAML::load(IO.read(Rails.root.join("config/database.yml")))
+  ActiveRecord::Base.establish_connection(config["test"])
+  load(Rails.root.join("db/schema.rb"))
+  load(Rails.root.join("db/seeds.rb"))
+
 end
 
 Spork.each_run do
@@ -98,4 +104,10 @@ RSpec.configure do |config|
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
+  # hack for loading db in memory
+  config = YAML::load(IO.read(Rails.root.join("config/database.yml")))
+  ActiveRecord::Base.establish_connection(config["test"])
+  load(Rails.root.join("db/schema.rb"))
+  load(Rails.root.join("db/seeds.rb"))
+
 end
