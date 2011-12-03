@@ -13,4 +13,10 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# simplecov generated reports
 /coverage
+
+# my vim swap file
+.*.swp
+.*.swo
