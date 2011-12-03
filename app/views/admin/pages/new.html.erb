@@ -1,0 +1,9 @@
+<div>
+
+<%= form_tag :action => "update", :controller => "admin/pages", :id => @page.id %>
+
+<%= render :partial => "form", :locals => { :page => @page } %>
+
+</form>
+
+</div>

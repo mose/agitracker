@@ -1,0 +1,9 @@
+<div class="span20">
+<h3>Pages</h3>
+
+<%= render :partial => 'list_pages', :locals => { :pages => @pages } %>
+
+<div>
+<%= link_to "New page", new_admin_page_path %>
+</div>
+</div>

@@ -1,0 +1,9 @@
+<h3>Edit <%= @page.name %></h3>
+
+<%= form_tag :action => "create", :controller => "admin/pages" %>
+
+<%= render :partial => "form", :locals => { :page => @page } %>
+
+</form>
+</div>
+

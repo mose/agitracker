@@ -1,0 +1,10 @@
+<% for page in pages %>
+<div class="page-entry">
+<%= link_to "delete", page, confirm: "Are you sure ?", method: :delete %>
+-
+<%= link_to "edit", edit_admin_page_path(page) %>
+-
+<%= page.title %>
+</div>
+
+<% end %>

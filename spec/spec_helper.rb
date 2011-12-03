@@ -1,6 +1,10 @@
 require 'rubygems'
 require 'spork'
-require 'watir-webdriver'
+#require 'watir-webdriver'
+require "webrat"
+Webrat.configure do |config|
+  config.mode = :rails
+end
 
 # simplecov don't seem to work with spork
 # so for running it, optionaly, I just run
@@ -13,8 +17,16 @@ Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However,
   # if you change any configuration or code from libraries loaded here, you'll
   # need to restart spork for it take effect.
-
-
+  ENV["RAILS_ENV"] ||= 'test'
+  require File.expand_path("../../config/environment", __FILE__)
+  require 'rspec/rails'
+  Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+  RSpec.configure do |config|
+    config.mock_with :rspec
+    config.fixture_path = "#{::Rails.root}/spec/fixtures"
+    config.use_transactional_fixtures = true
+    config.infer_base_class_for_anonymous_controllers = false
+  end
 end
 
 Spork.each_run do

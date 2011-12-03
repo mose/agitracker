@@ -1,9 +1,11 @@
-AgiTracker
+AgiTracker 
 ======================
 
 This is an experimental tool that I use as a pretext for practicing some Ruby on Rails.
 The main idea is to setup a tracker from agile family, a quick todo backlog listing with 
 fast item manipulation. 
+
+[![Build Status](https://secure.travis-ci.org/mose/agitracker.png)](http://travis-ci.org/mose/agitracker)
 
 Environment
 ------------------

@@ -44,14 +44,16 @@ group :development do
 end
 
 group :tests do
-	gem 'turn', :require => false
+	gem 'turn'
 	gem 'rspec-rails', :require => 'rspec'
 	gem 'spork'
-	
-	# http://watirwebdriver.com/ as an alternative to webrat
-	gem "watir-webdriver" 
-	# gem "webrat"
-
+	# http://watirwebdriver.com/ as webdriver
+	# gem 'watir-webdriver' 
+  # https://github.com/jeffkreeftmeijer/fuubar for alt formatting of rspec output
+  # gem 'fuubar'
+  # https://github.com/thoughtbot/shoulda
+  # gem "shoulda-matchers"
+	gem 'webrat'
 	gem 'simplecov' 
 	gem 'factory_girl_rails'
 end
