@@ -1,0 +1,23 @@
+<h3>Edit page <%= page.title %></h3>
+
+<div>
+<label for="title">Title</label>
+<%= text_field 'page', 'title' %>
+</div>
+
+<div>
+<label for="title">Name</label>
+<%= text_field 'page', 'name' %>
+</div>
+
+<div>
+<label for="title">Content</label>
+<%= text_area 'page', 'content' %>
+</div>
+
+<div>
+<label></label>
+<%= link_to "Cancel", admin_pages_path, :class => "btn"  %>
+<%= button_tag "Reset", :type => "reset", :class => "btn" %>
+<%= submit_tag "Save", :class => "btn primary" %>
+</div>
