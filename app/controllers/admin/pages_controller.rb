@@ -21,6 +21,7 @@ class Admin::PagesController < ApplicationController
   end
 
   def edit
+    @title = "Edit " + @page.name
   end
 
   def update

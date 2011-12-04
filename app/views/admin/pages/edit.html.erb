@@ -1,9 +1,9 @@
-<h3>Edit <%= @page.name %></h3>
+<div>
 
-<%= form_tag :action => "create", :controller => "admin/pages" %>
+<%= form_tag :action => "update", :controller => "admin/pages", :id => @page.id %>
 
-<%= render "form", :page => @page  %>
+<%= render "form", :page => @page %>
 
 </form>
-</div>
 
+</div>
