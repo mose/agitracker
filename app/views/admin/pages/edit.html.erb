@@ -1,6 +1,6 @@
 <div>
 
-<%= form_tag :action => "update", :controller => "admin/pages", :id => @page.id %>
+<%= form_tag admin_page_path(@page), :method => :put %>
 
 <%= render "form", :page => @page %>
 

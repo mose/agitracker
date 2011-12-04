@@ -1,5 +1,5 @@
 class Admin::PagesController < ApplicationController
-  before_filter :get_page_from_id, :only => [ :show, :edit, :update ]
+  before_filter :get_page_from_id, :only => [ :show, :edit, :update, :destroy ]
 
   def index
     @pages = Page.all
@@ -17,7 +17,8 @@ class Admin::PagesController < ApplicationController
 
   def create
     Page.create(params[:page])
-    redirect_to :index
+    flash[:success] = "ok, saved."
+    redirect_to admin_pages_path
   end
 
   def edit
@@ -27,14 +28,20 @@ class Admin::PagesController < ApplicationController
   def update
     if @page.update_attributes(params[:page])
       flash[:success] = "ok, saved."
-      redirect_to :show, :id => @page.id
+      redirect_to admin_page_path @page
     else
       flash[:failure] = "failed to save"
-      render :edit
+      render :edit, :id => @page.id
     end
   end
 
   def destroy
+    if @page.destroy
+      flash[:success] = "ok, destroyed."
+    else
+      flash[:failure] = "failed to destroy"
+    end
+    redirect_to admin_pages_path
   end
 
   private
