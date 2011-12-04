@@ -90,7 +90,13 @@ describe Admin::PagesController do
 
   end
 
-  pending "new: we see the form"
-  pending "delete: we remove a page"
+  describe "delete page" do
+    it "deletes a page" do
+      page = Factory.create(:page)
+      expect{ delete :destroy, :id => page.id }.to change(Page, :count).by(-1)
+      flash[:success].should_not be_nil
+      response.should redirect_to(admin_pages_path)
+    end
+  end
 
 end
