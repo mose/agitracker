@@ -58,5 +58,5 @@ group :tests do
   # gem "shoulda-matchers"
 	gem 'webrat'
 	gem 'simplecov' 
-	gem 'factory_girl_rails'
+	gem 'factory_girl_rails', '~> 1.2'
 end

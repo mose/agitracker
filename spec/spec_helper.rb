@@ -5,6 +5,7 @@ require "webrat"
 Webrat.configure do |config|
   config.mode = :rails
 end
+require 'factory_girl_rails'
 
 # simplecov don't seem to work with spork
 # so for running it, optionaly, I just run

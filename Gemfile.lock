@@ -167,7 +167,7 @@ DEPENDENCIES
   annotate
   bluecloth
   coffee-rails (~> 3.1.1)
-  factory_girl_rails
+  factory_girl_rails (~> 1.2)
   faker
   guard-spork
   jquery-rails

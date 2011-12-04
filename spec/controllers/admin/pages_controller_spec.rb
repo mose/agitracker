@@ -42,12 +42,55 @@ describe Admin::PagesController do
       get :edit, { :id => 1 }
       response.should have_selector("form")
     end
+
+    describe "update a page" do
+      before :each do
+        @page = Factory.create(:page)
+      end
+      it "saves the changes" do
+        post :update, { :id => @page, :page => { :name => "newname" } }
+        Page.find(@page.id).name.should == "newname"
+        flash[:success].should_not be_nil
+        response.should redirect_to(:action => :show, :id => assigns[:page].id)
+      end
+      it "don't save if name is not all lowercases" do
+        post :update, { :id => @page, :page => { :name => "NewName" } }
+        Page.find(@page.id).name.should == @page.name
+        flash[:failure].should_not be_nil
+        response.should be_success
+      end
+
+    end
   end
 
-  pending "update: we modify the page"
-  pending "update: we check validations"
+  describe "new page" do
+    it "returns http success" do
+      get :new
+      response.should be_success
+    end
+    it "loads a page" do
+      get :new
+      response.should have_selector("title", :content => "Agitracker: New page")
+    end
+    it "contains a form" do
+      get :new
+      response.should have_selector("form")
+    end
+
+    describe "creates a new page" do
+      before :each do
+        @page = Factory.build(:page)
+      end
+      it "saves created page" do
+        expect{ post :create, {:page => Factory.attributes_for(:page)} }.to change(Page, :count).by(+1)
+        flash[:success].should_not be_nil
+        response.should redirect_to(admin_pages_path)
+      end
+    end
+
+  end
+
   pending "new: we see the form"
-  pending "create: we create a new page"
   pending "delete: we remove a page"
 
 end
