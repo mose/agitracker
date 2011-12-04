@@ -1,2 +1,7 @@
 rvm: 1.9.3
 script: "bundle exec rspec spec"
+notifications:
+  email: "mose@mose.tw"
+  irc: 
+    channels: "irc.freenode.org#agitracker"
+
