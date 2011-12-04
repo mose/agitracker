@@ -36,11 +36,8 @@ class Admin::PagesController < ApplicationController
   end
 
   def destroy
-    if @page.destroy
-      flash[:success] = "ok, destroyed."
-    else
-      flash[:failure] = "failed to destroy"
-    end
+    @page.destroy
+    flash[:success] = "ok, destroyed."
     redirect_to admin_pages_path
   end
 
