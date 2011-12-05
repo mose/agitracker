@@ -3,14 +3,14 @@
 <h1><%= params[:action].capitalize %> user <%= user.name %></h1>
 
 <div class="clearfix">
-<%= label :name %>
+<%= label :name, "Name" %>
 <div class="input">
 <%= text_field 'user', 'name' %>
 </div>
 </div>
 
 <div class="clearfix">
-<label for="email">email</label>
+<%= label :email, "Email" %>
 <div class="input">
 <%= email_field 'user', 'email', :id => 'email' %>
 </div>
