@@ -6,6 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+puts '... Creating default pages'
 page_home = Page.create([
 { name: 'home',
   title: "Home page",
@@ -25,3 +26,6 @@ page_home = Page.create([
 }
 ])
 
+puts '... Setting up default user login'
+user = User.create! :name => 'Admin', :email => 'admin@example.com', :password => 'admin123', :password_confirmation => 'admin123'
+puts '... New user created: ' << user.name

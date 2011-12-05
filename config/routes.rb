@@ -1,7 +1,9 @@
 Agitracker::Application.routes.draw do
 
+  devise_for :users
+
   namespace :admin, :as => 'admin' do
-    resources :pages
+    resources :pages, :users
   end
 
   match'/pages/:name' => 'pages#show', :as => "page"

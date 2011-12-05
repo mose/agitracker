@@ -1,10 +1,8 @@
 <div class="row">
 <div class="span16">
-<ul>
-<li><%= link_to "List", admin_pages_path  %></li>
-<li><%= link_to "Edit", edit_admin_page_path(@page.id) %></li>
-<li><%= link_to "delete", :item => @page.id, confirm: "Are you sure ?", method: :delete %></li>
-</ul>
+<%= link_to "<- List", admin_pages_path, :class => "btn"  %>
+<%= link_to "Edit", edit_admin_page_path(@page.id), :class => "btn" %>
+<%= link_to "Delete", admin_page_path(@page.id), :controller => "admin/pages", confirm: "Are you sure ?", method: :delete, :class => "btn pull-right" %>
 </div>
 </div>
 

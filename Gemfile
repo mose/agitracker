@@ -11,6 +11,7 @@ gem 'rails', '3.1.3'
 gem 'sqlite3'
 gem 'mysql2'
 gem 'bluecloth'
+gem "devise"
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -46,7 +47,7 @@ end
 
 group :tests do
 	gem 'turn'
-	gem 'rspec-rails', :require => 'rspec'
+	gem 'rspec-rails'
 	gem 'spork'
   gem 'rb-fsevent'
   gem 'guard-spork'
