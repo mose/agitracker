@@ -1,2 +1,10 @@
-<h1>Admin::Users#index</h1>
-<p>Find me in app/views/admin/users/index.html.erb</p>
+<div class="span20">                                                                                                                                           
+<h3>Users</h3>
+
+<%= render 'list_users', :users => @users %>
+
+<div>
+<%= link_to "New user", new_admin_user_path, :class => "btn newbtn" %>
+</div>
+</div>
+

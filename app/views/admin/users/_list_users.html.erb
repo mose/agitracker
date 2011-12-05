@@ -1,0 +1,11 @@
+<% for user in users %>
+<p class="user-entry">
+<%= link_to "delete", admin_user_path(user.id), :controller => "admin/users", confirm: "Are you sure ?", method: :delete, :class => "btn smallbtn deletebtn" %>
+<%= link_to "edit", edit_admin_user_path(user.id), :class => "btn smallbtn editbtn" %>
+<%= link_to "view", admin_user_path(user.id), :class => "btn smallbtn viewbtn" %>
+<%= user.name %>,
+<%= user.email %>
+</p>
+
+<% end %>
+

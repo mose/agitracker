@@ -1,0 +1,28 @@
+<div class="row">                                                                                                                                              
+
+<h1><%= params[:action].capitalize %> user <%= user.name %></h1>
+
+<div class="clearfix">
+<label for="name">Name</label>
+<div class="input">
+<%= text_field 'user', 'name', :id => 'title', :class => 'span8' %>
+</div>
+</div>
+
+<div class="clearfix">
+<label for="name">email</label>
+<div class="input">
+<%= text_field 'page', 'email', :id => 'email', :class => 'span8' %>
+</div>
+</div>
+
+
+<div class="clearfix">
+<label></label>
+<div class="input">
+<%= link_to "Cancel", admin_users_path, :class => "btn"  %>
+<%= button_tag "Reset", :type => "reset", :class => "btn" %>
+<%= submit_tag "Save", :class => "btn primary" %>
+</div>
+</div>
+
