@@ -1,5 +1,6 @@
 class Admin::PagesController < ApplicationController
   before_filter :get_page_from_id, :only => [ :show, :edit, :update, :destroy ]
+  before_filter :authenticate_user!
 
   def index
     @pages = Page.all

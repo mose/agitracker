@@ -1,5 +1,6 @@
 class Admin::UsersController < ApplicationController
   before_filter :get_user_from_id, :only => [ :show, :edit, :update, :destroy ]
+  before_filter :authenticate_user!
 
 
   def index

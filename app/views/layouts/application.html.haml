@@ -1,0 +1,19 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %meta{:charset => "utf-8"}
+      %title Agitracker#{': ' + @title.capitalize unless @title.nil?}
+      %meta{:content => "agitracker test application.", :name => "description"}
+        %meta{:content => "Mose", :name => "author"}
+          = stylesheet_link_tag    :application
+          = javascript_include_tag :application
+          = csrf_meta_tags
+  %body
+    .container
+      = render 'layouts/header', :page => @page
+      %section.round
+        - flash.each do |key, value|
+          %div{:class => "flash #{key}"}= value
+        = yield
+      = render 'layouts/footer'
+      = debug(params) if Rails.env.development?

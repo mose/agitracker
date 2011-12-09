@@ -11,7 +11,10 @@ gem 'rails', '3.1.3'
 gem 'sqlite3'
 gem 'mysql2'
 gem 'bluecloth'
-gem "devise"
+gem 'devise'
+gem 'cancan'
+gem 'cantango'
+gem 'haml'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -42,7 +45,7 @@ group :development do
 	gem 'log_buddy'
 	gem 'annotate'
 	gem 'faker'
-	gem "rails_best_practices"
+	gem 'rails_best_practices'
 end
 
 group :tests do

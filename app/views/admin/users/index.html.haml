@@ -1,0 +1,5 @@
+.span20
+  %h3 Users
+  = render 'list_users', :users => @users
+  %div
+    = link_to "New user", new_admin_user_path, :class => "btn newbtn"

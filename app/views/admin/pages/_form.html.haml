@@ -1,0 +1,22 @@
+.row
+  %h1
+    = params[:action].capitalize
+    page #{page.title}
+  .clearfix.span9
+    %label{:for => "title"} Title
+    .input
+      = text_field 'page', 'title', :id => 'title', :class => 'span8'
+  .clearfix.span6
+    %label{:for => "name"} Name
+    .input
+      = text_field 'page', 'name', :id => 'name', :class => 'span4'
+.clearfix.span16
+  %label{:for => "content"} Content
+  .input
+    = text_area 'page', 'content', :id => 'content', :class => 'span13'
+.clearfix
+  %label
+  .input
+    = link_to "Cancel", admin_pages_path, :class => "btn"
+    = button_tag "Reset", :type => "reset", :class => "btn"
+    = submit_tag "Save", :class => "btn primary"

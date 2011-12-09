@@ -1,0 +1,18 @@
+.row
+  %h1
+    = params[:action].capitalize
+    user #{user.name}
+  .clearfix
+    = label :name, "Name"
+    .input
+      = text_field 'user', 'name'
+  .clearfix
+    = label :email, "Email"
+    .input
+      = email_field 'user', 'email', :id => 'email'
+  .clearfix
+    %label
+    .input
+      = link_to "Cancel", admin_users_path, :class => "btn"
+      = button_tag "Reset", :type => "reset", :class => "btn"
+      = submit_tag "Save", :class => "btn primary"
