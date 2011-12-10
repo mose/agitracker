@@ -15,6 +15,7 @@ gem 'devise'
 gem 'cancan'
 gem 'cantango'
 gem 'haml'
+gem 'simple_form'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -46,6 +47,7 @@ group :development do
 	gem 'annotate'
 	gem 'faker'
 	gem 'rails_best_practices'
+  gem 'haml-rails'
 end
 
 group :tests do
