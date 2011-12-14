@@ -50,5 +50,18 @@ module Agitracker
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # some custom generator tuning
+    config.generators do |g|
+      g.test_framework :rspec, :views => false, :fixture => true
+      g.fixture_replacement :factory_girl, :dir => 'spec/factories'
+      g.form_builder :simple_form
+      g.template_engine :haml
+    end
+
+    # In Rails 3+, the lib directory is no longer autoloaded.
+    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += Dir["#{config.root}/lib/**/"]
+
   end
 end

@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Admin::PagesController do
   render_views
+  login_admin
 
   describe "index listing pages" do
     it "returns http success" do
