@@ -11,8 +11,6 @@ require 'factory_girl_rails'
 # so for running it, optionaly, I just run
 # COV=1 rspec spec
 require 'simplecov'
-SimpleCov.start 'rails' if ENV['COV']
-
 
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However,
