@@ -31,7 +31,7 @@ describe Admin::UsersController do
 
   end
 
-  describe "GET 'edit'" do
+  describe "edits a user" do
     it "returns http success" do
       get :edit, { :id => 1 }
       response.should be_success
@@ -45,15 +45,21 @@ describe Admin::UsersController do
       response.should have_selector("form")
     end
 
-    describe "update a page" do
+    describe "updates a user" do
       before :each do
         @user = Factory.create(:user)
       end
-      it "saves the changes" do
+      it "saves the changes if all is good" do
         post :update, { :id => @user, :user => { :name => "newname" } }
         User.find(@user.id).name.should == "newname"
         flash[:success].should_not be_nil
         response.should redirect_to(:action => :show, :id => assigns[:user].id)
+      end
+      it "refuses to save user if somthing is wrong" do
+        post :update, { :id => @user, :user => { :name => "" } }
+        User.find(@user.id).name.should == @user.name
+        flash[:failure].should_not be_nil
+        response.should be_success
       end
     end
 
