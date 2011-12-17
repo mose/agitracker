@@ -27,5 +27,13 @@ page_home = Page.create([
 ])
 
 puts '... Setting up default user login'
+
 user = User.create! :name => 'Admin', :email => 'admin@example.com', :password => 'admin123', :password_confirmation => 'admin123'
+user.roles = ['admin']
+user.save
+puts '... New user created: ' << user.name
+
+user = User.create! :name => 'Editor', :email => 'editor@example.com', :password => 'editor123', :password_confirmation => 'editor123'
+user.roles = ['editor']
+user.save
 puts '... New user created: ' << user.name

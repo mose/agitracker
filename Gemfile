@@ -13,7 +13,7 @@ gem 'mysql2'
 gem 'bluecloth'
 gem 'devise'
 gem 'cancan'
-gem 'cantango'
+# gem 'cantango'
 gem 'haml'
 gem 'simple_form'
 

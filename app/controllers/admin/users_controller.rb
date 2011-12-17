@@ -1,4 +1,7 @@
 class Admin::UsersController < ApplicationController
+
+  load_and_authorize_resource
+
   before_filter :get_user_from_id, :only => [ :show, :edit, :update, :destroy ]
   before_filter :authenticate_user!
 
@@ -45,7 +48,7 @@ class Admin::UsersController < ApplicationController
 
 
   private
-  
+
   def get_user_from_id
     @user = User.find(params[:id])
   end

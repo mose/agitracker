@@ -3,20 +3,27 @@
     %nav
       .fill
         .container
-          = link_to "agitracker", root_path, :class => "brand"
+          = link_to "a.git.racker", root_path, :class => "brand"
           %ul.nav
             - %w{home about contact}.each do |p|
-              <li#{%{ class="active"}.html_safe if (!page.nil? and page.name === p)}>#{link_to p.capitalize, page_path(p)}
+              - if (!page.nil? and page.name === p)
+                %li.active= link_to p.capitalize, page_path(p)
+              - else
+                %li= link_to p.capitalize, page_path(p)
           %ul.nav.secondary-nav
             - if user_signed_in?
               %li= link_to('Logout', destroy_user_session_path, :method=>'delete')
-              %li= link_to('Edit account', edit_user_registration_path)
-              %li.dropdown{"data-dropdown" => "dropdown"}
-                %a.dropdown-toggle{:href => "#"} Admin
-                %ul.dropdown-menu
-                  %li= link_to "Pages", admin_pages_path
-                  %li= link_to "Users", admin_users_path
+              %li= link_to('Edit ' + current_user.name, edit_user_registration_path)
+              - if (can? :update, Page)
+                %li.dropdown{"data-dropdown" => "dropdown"}
+                  %a.dropdown-toggle{:href => "#"} Admin
+                  %ul.dropdown-menu
+                    - if can? :update, Page
+                      %li= link_to "Pages", admin_pages_path
+                    - if can? :update, User
+                      %li= link_to "Users", admin_users_path
+              - else
+                = current_user.roles
             - else
               %li= link_to('Login', new_user_session_path)
               %li= link_to('Sign up', new_user_registration_path)
-  .loginbox

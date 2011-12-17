@@ -11,6 +11,14 @@
     .input
       = email_field 'user', 'email', :id => 'email'
   .clearfix
+    = label :roles, "Roles"
+    - for role in User::ROLES
+      .div.input
+        = check_box_tag "user[roles][]", role, user.roles.include?(role)
+        = role.humanize
+    = hidden_field_tag "user[roles][]", ""
+    .div= user.roles
+  .clearfix
     %label
     .input
       = link_to "Cancel", admin_users_path, :class => "btn"

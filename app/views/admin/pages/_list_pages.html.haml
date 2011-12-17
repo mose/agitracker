@@ -1,6 +1,8 @@
 - for page in pages
   %p.page-entry
-    = link_to "delete", admin_page_path(page.id), :controller => "admin/pages", confirm: "Are you sure ?", method: :delete, :class => "btn smallbtn deletebtn"
-    = link_to "edit", edit_admin_page_path(page.id), :class => "btn smallbtn editbtn"
+    - if can? :destroy, Page
+      = link_to "delete", admin_page_path(page.id), :controller => "admin/pages", confirm: "Are you sure ?", method: :delete, :class => "btn smallbtn deletebtn"
+    - if can? :update, Page
+      = link_to "edit", edit_admin_page_path(page.id), :class => "btn smallbtn editbtn"
     = link_to "view", admin_page_path(page.id), :class => "btn smallbtn viewbtn"
     = page.title

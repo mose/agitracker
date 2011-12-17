@@ -21,5 +21,4 @@ describe User do
       @user.errors[:name].should include("can't be blank")
     end
   end
-
 end
