@@ -1,5 +1,6 @@
 .span16
   %h3 Pages
   = render 'list_pages', :pages => @pages
-  %div
-    = link_to "New page", new_admin_page_path, :class => "btn newbtn"
+  - if can? :create, Page
+    %div
+      = link_to "New page", new_admin_page_path, :class => "btn newbtn"

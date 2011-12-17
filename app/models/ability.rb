@@ -11,6 +11,7 @@ class Ability
       can :read, Page
       if user.is? :editor
         can :update, Page
+        can :create, Page
       end
     end
 

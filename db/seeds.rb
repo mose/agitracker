@@ -10,19 +10,19 @@ puts '... Creating default pages'
 page_home = Page.create([
 { name: 'home',
   title: "Home page",
-  content: "This is the homepage, customize it in /admin/page/home/edit"
+  content: "This is the homepage"
 },
 { name: 'contact',
   title: "Contact us",
-  content: "This is the contact page, customize it in /admin/page/contact/edit"
+  content: "This is the contact page."
 },
 { name: 'help',
   title: "Help and FAQ",
-  content: "This is the help page, customize it in /admin/page/help/edit"
+  content: "This is the help page."
 },
 { name: 'about',
   title: "About us",
-  content: "This is the homepage, customize it in /admin/page/about/edit"
+  content: "This is the homepage."
 }
 ])
 
