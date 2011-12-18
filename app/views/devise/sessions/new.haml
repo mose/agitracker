@@ -10,10 +10,8 @@
         .input= f.password_field :password
       - if devise_mapping.rememberable?
         .clearfix
-          = f.label ''
-          .input
-            = f.check_box :remember_me
-            Remember me
+          = f.label :remember_me, :style => 'padding-top: 0;'
+          .input= f.check_box :remember_me
       .clearfix
         = f.label ''
         .input= f.submit "Sign in", :class => 'btn primary'

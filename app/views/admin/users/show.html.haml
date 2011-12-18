@@ -6,7 +6,11 @@
     - if can? :destroy, User
       = link_to "Delete", admin_user_path(@user.id), :controller => "admin/users", confirm: "Are you sure ?", method: :delete, :class => "btn pull-right"
 .row
-  %div
-    %h3= @user.name
-  %div
-    = @user.email
+  .span16
+    %div
+      %h3= @user.name
+    %div
+      = @user.email
+    %div 
+      Roles: 
+      = @user.roles.join ', '
