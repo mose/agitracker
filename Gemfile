@@ -65,4 +65,7 @@ group :tests do
 	gem 'webrat'
 	gem 'simplecov' 
 	gem 'factory_girl_rails', '~> 1.2'
+  gem 'cucumber-rails'
+  gem 'capybara'
+  gem 'database_cleaner'
 end
