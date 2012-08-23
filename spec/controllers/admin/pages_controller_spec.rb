@@ -46,7 +46,7 @@ describe Admin::PagesController do
 
     describe "update a page" do
       before :each do
-        @page = Factory.create(:page)
+        @page = FactoryGirl.create(:page)
       end
       it "saves the changes" do
         post :update, { :id => @page, :page => { :name => "newname" } }
@@ -80,10 +80,10 @@ describe Admin::PagesController do
 
     describe "creates a new page" do
       before :each do
-        @page = Factory.build(:page)
+        @page = FactoryGirl.build(:page)
       end
       it "saves created page" do
-        expect{ post :create, {:page => Factory.attributes_for(:page)} }.to change(Page, :count).by(+1)
+        expect{ post :create, {:page => FactoryGirl.attributes_for(:page)} }.to change(Page, :count).by(+1)
         flash[:success].should_not be_nil
         response.should redirect_to(admin_pages_path)
       end
@@ -93,7 +93,7 @@ describe Admin::PagesController do
 
   describe "delete page" do
     it "deletes a page" do
-      page = Factory.create(:page)
+      page = FactoryGirl.create(:page)
       expect{ delete :destroy, :id => page.id }.to change(Page, :count).by(-1)
       flash[:success].should_not be_nil
       response.should redirect_to(admin_pages_path)

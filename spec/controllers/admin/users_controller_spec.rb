@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Admin::UsersController do
   render_views
   login_admin
-  
+
   describe "lists users" do
     it "returns http success" do
       get :index
@@ -47,7 +47,7 @@ describe Admin::UsersController do
 
     describe "updates a user" do
       before :each do
-        @user = Factory.create(:user)
+        @user = FactoryGirl.create(:user)
       end
       it "saves the changes if all is good" do
         post :update, { :id => @user, :user => { :name => "newname" } }
@@ -81,10 +81,10 @@ describe Admin::UsersController do
 
     describe "creates a new user" do
       before :each do
-        @user = Factory.build(:user)
+        @user = FactoryGirl.build(:user)
       end
       it "saves created user" do
-        expect{ post :create, {:user => Factory.attributes_for(:user)} }.to change(User, :count).by(+1)
+        expect{ post :create, {:user => FactoryGirl.attributes_for(:user)} }.to change(User, :count).by(+1)
         flash[:success].should_not be_nil
         response.should redirect_to(admin_users_path)
       end
@@ -94,7 +94,7 @@ describe Admin::UsersController do
 
   describe "GET 'destroy'" do
     it "deletes a user" do
-      user = Factory.create(:user)
+      user = FactoryGirl.create(:user)
       expect{ delete :destroy, :id => user.id }.to change(User, :count).by(-1)
       flash[:success].should_not be_nil
       response.should redirect_to(admin_users_path)

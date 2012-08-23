@@ -3,14 +3,14 @@ module ControllerAuth
     before(:each) do
       setup_controller_for_warden
       @request.env["devise.mapping"] = Devise.mappings[:admin]
-      sign_in Factory.create(:admin)
+      sign_in FactoryGirl.create(:admin)
     end
   end
 
   def login_user
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:user]
-      sign_in Factory.create(:user)
+      sign_in FactoryGirl.create(:user)
     end
   end
 end
