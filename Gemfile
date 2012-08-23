@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 #require "rubygems"
 #require "bundler/setup"
 
-gem 'rails', '3.1.3'
+gem 'rails', '3.2.8'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -20,9 +20,9 @@ gem 'simple_form'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.1.5'
-  gem 'coffee-rails', '~> 3.1.1'
-  gem 'uglifier', '>= 1.0.3'
+  gem 'sass-rails'
+  gem 'coffee-rails'
+  gem 'uglifier'
 end
 
 gem 'jquery-rails'
@@ -43,26 +43,27 @@ gem 'anjlab-bootstrap-rails', :require => 'bootstrap-rails'
 
 group :development do
   gem 'rspec-rails'
-	gem 'log_buddy'
-	gem 'annotate'
-	gem 'faker'
-	gem 'rails_best_practices'
+  gem 'log_buddy'
+  gem 'annotate'
+  gem 'faker'
+  gem 'rails_best_practices'
   gem 'haml-rails'
+  gem 'miniprofiler'
 end
 
 group :tests do
-	gem 'turn'
-	gem 'rspec-rails'
-	gem 'spork'
+  gem 'turn'
+  gem 'rspec-rails'
+  gem 'spork'
   gem 'rb-fsevent'
   gem 'guard-spork'
-	# http://watirwebdriver.com/ as webdriver
-	# gem 'watir-webdriver' 
+  # http://watirwebdriver.com/ as webdriver
+  # gem 'watir-webdriver'
   # https://github.com/jeffkreeftmeijer/fuubar for alt formatting of rspec output
   # gem 'fuubar'
   # https://github.com/thoughtbot/shoulda
   # gem "shoulda-matchers"
-	gem 'webrat'
-	gem 'simplecov' 
-	gem 'factory_girl_rails', '~> 1.2'
+  gem 'webrat'
+  gem 'simplecov'
+  gem 'factory_girl_rails'
 end
