@@ -1,4 +1,4 @@
-AgiTracker v0.0.1
+AgiTracker v0.0.2
 ======================
 
 This is an experimental tool that I use as a pretext for practicing some Ruby on Rails.
