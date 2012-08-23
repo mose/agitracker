@@ -43,26 +43,27 @@ gem 'anjlab-bootstrap-rails', :require => 'bootstrap-rails'
 
 group :development do
   gem 'rspec-rails'
-	gem 'log_buddy'
-	gem 'annotate'
-	gem 'faker'
-	gem 'rails_best_practices'
+  gem 'log_buddy'
+  gem 'annotate'
+  gem 'faker'
+  gem 'rails_best_practices'
   gem 'haml-rails'
+  gem 'miniprofiler'
 end
 
 group :tests do
-	gem 'turn'
-	gem 'rspec-rails'
-	gem 'spork'
+  gem 'turn'
+  gem 'rspec-rails'
+  gem 'spork'
   gem 'rb-fsevent'
   gem 'guard-spork'
-	# http://watirwebdriver.com/ as webdriver
-	# gem 'watir-webdriver'
+  # http://watirwebdriver.com/ as webdriver
+  # gem 'watir-webdriver'
   # https://github.com/jeffkreeftmeijer/fuubar for alt formatting of rspec output
   # gem 'fuubar'
   # https://github.com/thoughtbot/shoulda
   # gem "shoulda-matchers"
-	gem 'webrat'
-	gem 'simplecov'
-	gem 'factory_girl_rails'
+  gem 'webrat'
+  gem 'simplecov'
+  gem 'factory_girl_rails'
 end
