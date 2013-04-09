@@ -12,7 +12,7 @@ gem 'cancan'
 # gem 'cantango'
 gem 'haml'
 gem 'simple_form'
-gem 'ender-rails', path: '../../projects/ender-rails'
+gem 'ender-rails', git: 'https://github.com/mose/ender-rails.git'
 
 # Gems used only for assets and not required
 # in production environments by default.
