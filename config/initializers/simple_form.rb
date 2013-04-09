@@ -31,6 +31,7 @@ SimpleForm.setup do |config|
   # You can wrap all inputs in a pre-defined tag.
 
   # CSS class to add to all wrapper tags.
+  config.wrappers :tag => :div, :class => :input
 
   # CSS class to add to the wrapper if the field has errors.
   # config.wrapper_error_class = :field_with_errors

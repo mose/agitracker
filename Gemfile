@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
-
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
@@ -41,10 +40,10 @@ gem 'anjlab-bootstrap-rails', '>= 2.3', :require => 'bootstrap-rails'
 
 group :development do
   gem 'rspec-rails'
-	gem 'log_buddy'
-	gem 'annotate'
-	gem 'faker'
-	gem 'rails_best_practices'
+  gem 'log_buddy'
+  gem 'annotate'
+  gem 'faker'
+  gem 'rails_best_practices'
   gem 'haml-rails'
   gem "better_errors"
 end

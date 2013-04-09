@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Admin::UsersController do
   render_views
   login_admin
-  
+
   describe "lists users" do
     it "returns http success" do
       get :index
