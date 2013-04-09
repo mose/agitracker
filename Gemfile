@@ -22,8 +22,6 @@ group :assets do
   gem 'uglifier'
 end
 
-gem 'jquery-rails'
-
 gem 'anjlab-bootstrap-rails', '>= 2.3', :require => 'bootstrap-rails'
 
 # To use ActiveModel has_secure_password
