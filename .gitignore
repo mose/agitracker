@@ -23,4 +23,6 @@
 # my vim swap file
 .*.swp
 .*.swo
+
 vendor/ruby
+vendor/cache

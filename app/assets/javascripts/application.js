@@ -7,13 +7,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
-//
-// peek boostrap components
-//= require bootstrap-alerts
-//= require bootstrap-dropdown
-//= require bootstrap-modal
-//= require bootstrap-twipsy
-//= require bootstrap-popover
-//= require bootstrap-scrollspy
-//= require bootstrap-tabs
 
+//= require twitter/bootstrap
