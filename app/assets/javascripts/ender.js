@@ -1,8 +1,8 @@
 /*!
   * =============================================================
   * Ender: open module JavaScript framework (https://ender.no.de)
-  * Build: ender build jeesh --output /home/mose/rails/agitracker/app/assets/javascripts/ender
-  * Packages: ender-js@0.4.4-1 domready@0.2.11 qwery@3.4.1 bonzo@1.3.4 bean@1.0.3 jeesh@0.0.6
+  * Build: ender build jeesh reqwest reqwest reqwest jeesh reqwest jeesh ../../projects/ender-ujs ../../projects/ender-ujs ../../projects/ender-ujs ../../projects/ender-ujs ../../projects/ender-ujs --output /home/mose/rails/agitracker/app/assets/javascripts/ender --help
+  * Packages: ender-js@0.4.4-1 domready@0.2.11 qwery@3.4.1 bonzo@1.3.4 bean@1.0.3 jeesh@0.0.6 reqwest@0.6.4 ender-ujs@0.0.3
   * =============================================================
   */
 
@@ -2759,4 +2759,924 @@
 
   provide("jeesh", module.exports);
   $.ender(module.exports);
+}());
+
+(function () {
+
+  var module = { exports: {} }, exports = module.exports;
+
+  /*!
+    * Reqwest! A general purpose XHR connection manager
+    * (c) Dustin Diaz 2012
+    * https://github.com/ded/reqwest
+    * license MIT
+    */
+  (function (name, context, definition) {
+    if (typeof module != 'undefined' && module.exports) module.exports = definition()
+    else if (typeof define == 'function' && define.amd) define(definition)
+    else context[name] = definition()
+  })('reqwest', this, function () {
+
+    var win = window
+      , doc = document
+      , twoHundo = /^20\d$/
+      , byTag = 'getElementsByTagName'
+      , readyState = 'readyState'
+      , contentType = 'Content-Type'
+      , requestedWith = 'X-Requested-With'
+      , head = doc[byTag]('head')[0]
+      , uniqid = 0
+      , callbackPrefix = 'reqwest_' + (+new Date())
+      , lastValue // data stored by the most recent JSONP callback
+      , xmlHttpRequest = 'XMLHttpRequest'
+      , noop = function () {}
+
+    var isArray = typeof Array.isArray == 'function' ? Array.isArray : function (a) {
+      return a instanceof Array
+    }
+    var defaultHeaders = {
+        contentType: 'application/x-www-form-urlencoded'
+      , requestedWith: xmlHttpRequest
+      , accept: {
+          '*':  'text/javascript, text/html, application/xml, text/xml, */*'
+        , xml:  'application/xml, text/xml'
+        , html: 'text/html'
+        , text: 'text/plain'
+        , json: 'application/json, text/javascript'
+        , js:   'application/javascript, text/javascript'
+        }
+      }
+    var xhr = win[xmlHttpRequest] ?
+      function () {
+        return new XMLHttpRequest()
+      } :
+      function () {
+        return new ActiveXObject('Microsoft.XMLHTTP')
+      }
+
+    function handleReadyState(o, success, error) {
+      return function () {
+        if (o && o[readyState] == 4) {
+          o.onreadystatechange = noop;
+          if (twoHundo.test(o.status)) {
+            success(o)
+          } else {
+            error(o)
+          }
+        }
+      }
+    }
+
+    function setHeaders(http, o) {
+      var headers = o.headers || {}, h
+      headers.Accept = headers.Accept || defaultHeaders.accept[o.type] || defaultHeaders.accept['*']
+      // breaks cross-origin requests with legacy browsers
+      if (!o.crossOrigin && !headers[requestedWith]) headers[requestedWith] = defaultHeaders.requestedWith
+      if (!headers[contentType]) headers[contentType] = o.contentType || defaultHeaders.contentType
+      for (h in headers) {
+        headers.hasOwnProperty(h) && http.setRequestHeader(h, headers[h])
+      }
+    }
+
+    function setCredentials(http, o) {
+      if (typeof o.withCredentials !== "undefined" && typeof http.withCredentials !== "undefined") {
+        http.withCredentials = !!o.withCredentials
+      }
+    }
+
+    function generalCallback(data) {
+      lastValue = data
+    }
+
+    function urlappend(url, s) {
+      return url + (/\?/.test(url) ? '&' : '?') + s
+    }
+
+    function handleJsonp(o, fn, err, url) {
+      var reqId = uniqid++
+        , cbkey = o.jsonpCallback || 'callback' // the 'callback' key
+        , cbval = o.jsonpCallbackName || reqwest.getcallbackPrefix(reqId)
+        // , cbval = o.jsonpCallbackName || ('reqwest_' + reqId) // the 'callback' value
+        , cbreg = new RegExp('((^|\\?|&)' + cbkey + ')=([^&]+)')
+        , match = url.match(cbreg)
+        , script = doc.createElement('script')
+        , loaded = 0
+        , isIE10 = navigator.userAgent.indexOf('MSIE 10.0') !== -1
+
+      if (match) {
+        if (match[3] === '?') {
+          url = url.replace(cbreg, '$1=' + cbval) // wildcard callback func name
+        } else {
+          cbval = match[3] // provided callback func name
+        }
+      } else {
+        url = urlappend(url, cbkey + '=' + cbval) // no callback details, add 'em
+      }
+
+      win[cbval] = generalCallback
+
+      script.type = 'text/javascript'
+      script.src = url
+      script.async = true
+      if (typeof script.onreadystatechange !== 'undefined' && !isIE10) {
+        // need this for IE due to out-of-order onreadystatechange(), binding script
+        // execution to an event listener gives us control over when the script
+        // is executed. See http://jaubourg.net/2010/07/loading-script-as-onclick-handler-of.html
+        //
+        // if this hack is used in IE10 jsonp callback are never called
+        script.event = 'onclick'
+        script.htmlFor = script.id = '_reqwest_' + reqId
+      }
+
+      script.onload = script.onreadystatechange = function () {
+        if ((script[readyState] && script[readyState] !== 'complete' && script[readyState] !== 'loaded') || loaded) {
+          return false
+        }
+        script.onload = script.onreadystatechange = null
+        script.onclick && script.onclick()
+        // Call the user callback with the last value stored and clean up values and scripts.
+        o.success && o.success(lastValue)
+        lastValue = undefined
+        head.removeChild(script)
+        loaded = 1
+      }
+
+      // Add the script to the DOM head
+      head.appendChild(script)
+    }
+
+    function getRequest(o, fn, err) {
+      var method = (o.method || 'GET').toUpperCase()
+        , url = typeof o === 'string' ? o : o.url
+        // convert non-string objects to query-string form unless o.processData is false
+        , data = (o.processData !== false && o.data && typeof o.data !== 'string')
+          ? reqwest.toQueryString(o.data)
+          : (o.data || null)
+        , http
+
+      // if we're working on a GET request and we have data then we should append
+      // query string to end of URL and not post data
+      if ((o.type == 'jsonp' || method == 'GET') && data) {
+        url = urlappend(url, data)
+        data = null
+      }
+
+      if (o.type == 'jsonp') return handleJsonp(o, fn, err, url)
+
+      http = xhr()
+      http.open(method, url, true)
+      setHeaders(http, o)
+      setCredentials(http, o)
+      http.onreadystatechange = handleReadyState(http, fn, err)
+      o.before && o.before(http)
+      http.send(data)
+      return http
+    }
+
+    function Reqwest(o, fn) {
+      this.o = o
+      this.fn = fn
+
+      init.apply(this, arguments)
+    }
+
+    function setType(url) {
+      var m = url.match(/\.(json|jsonp|html|xml)(\?|$)/)
+      return m ? m[1] : 'js'
+    }
+
+    function init(o, fn) {
+
+      this.url = typeof o == 'string' ? o : o.url
+      this.timeout = null
+
+      // whether request has been fulfilled for purpose
+      // of tracking the Promises
+      this._fulfilled = false
+      // success handlers
+      this._fulfillmentHandlers = []
+      // error handlers
+      this._errorHandlers = []
+      // complete (both success and fail) handlers
+      this._completeHandlers = []
+      this._erred = false
+      this._responseArgs = {}
+
+      var self = this
+        , type = o.type || setType(this.url)
+
+      fn = fn || function () {}
+
+      if (o.timeout) {
+        this.timeout = setTimeout(function () {
+          self.abort()
+        }, o.timeout)
+      }
+
+      if (o.success) {
+        this._fulfillmentHandlers.push(function () {
+          o.success.apply(o, arguments)
+        })
+      }
+
+      if (o.error) {
+        this._errorHandlers.push(function () {
+          o.error.apply(o, arguments)
+        })
+      }
+
+      if (o.complete) {
+        this._completeHandlers.push(function () {
+          o.complete.apply(o, arguments)
+        })
+      }
+
+      function complete(resp) {
+        o.timeout && clearTimeout(self.timeout)
+        self.timeout = null
+        while (self._completeHandlers.length > 0) {
+          self._completeHandlers.shift()(resp)
+        }
+      }
+
+      function success(resp) {
+        var r = resp.responseText
+        if (r) {
+          switch (type) {
+          case 'json':
+            try {
+              resp = win.JSON ? win.JSON.parse(r) : eval('(' + r + ')')
+            } catch (err) {
+              return error(resp, 'Could not parse JSON in response', err)
+            }
+            break;
+          case 'js':
+            resp = eval(r)
+            break;
+          case 'html':
+            resp = r
+            break;
+          case 'xml':
+            resp = resp.responseXML;
+            break;
+          }
+        }
+
+        self._responseArgs.resp = resp
+        self._fulfilled = true
+        fn(resp)
+        while (self._fulfillmentHandlers.length > 0) {
+          self._fulfillmentHandlers.shift()(resp)
+        }
+
+        complete(resp)
+      }
+
+      function error(resp, msg, t) {
+        self._responseArgs.resp = resp
+        self._responseArgs.msg = msg
+        self._responseArgs.t = t
+        self._erred = true
+        while (self._errorHandlers.length > 0) {
+          self._errorHandlers.shift()(resp, msg, t)
+        }
+        complete(resp)
+      }
+
+      this.request = getRequest(o, success, error)
+    }
+
+    Reqwest.prototype = {
+      abort: function () {
+        this.request.abort()
+      }
+
+    , retry: function () {
+        init.call(this, this.o, this.fn)
+      }
+
+      /**
+       * Small deviation from the Promises A CommonJs specification
+       * http://wiki.commonjs.org/wiki/Promises/A
+       */
+
+      /**
+       * `then` will execute upon successful requests
+       */
+    , then: function (success, fail) {
+        if (this._fulfilled) {
+          success(this._responseArgs.resp)
+        } else if (this._erred) {
+          fail(this._responseArgs.resp, this._responseArgs.msg, this._responseArgs.t)
+        } else {
+          this._fulfillmentHandlers.push(success)
+          this._errorHandlers.push(fail)
+        }
+        return this
+      }
+
+      /**
+       * `always` will execute whether the request succeeds or fails
+       */
+    , always: function (fn) {
+        if (this._fulfilled || this._erred) {
+          fn(this._responseArgs.resp)
+        } else {
+          this._completeHandlers.push(fn)
+        }
+        return this
+      }
+
+      /**
+       * `fail` will execute when the request fails
+       */
+    , fail: function (fn) {
+        if (this._erred) {
+          fn(this._responseArgs.resp, this._responseArgs.msg, this._responseArgs.t)
+        } else {
+          this._errorHandlers.push(fn)
+        }
+        return this
+      }
+    }
+
+    function reqwest(o, fn) {
+      return new Reqwest(o, fn)
+    }
+
+    // normalize newline variants according to spec -> CRLF
+    function normalize(s) {
+      return s ? s.replace(/\r?\n/g, '\r\n') : ''
+    }
+
+    function serial(el, cb) {
+      var n = el.name
+        , t = el.tagName.toLowerCase()
+        , optCb = function (o) {
+            // IE gives value="" even where there is no value attribute
+            // 'specified' ref: http://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-862529273
+            if (o && !o.disabled)
+              cb(n, normalize(o.attributes.value && o.attributes.value.specified ? o.value : o.text))
+          }
+
+      // don't serialize elements that are disabled or without a name
+      if (el.disabled || !n) return;
+
+      switch (t) {
+      case 'input':
+        if (!/reset|button|image|file/i.test(el.type)) {
+          var ch = /checkbox/i.test(el.type)
+            , ra = /radio/i.test(el.type)
+            , val = el.value;
+          // WebKit gives us "" instead of "on" if a checkbox has no value, so correct it here
+          (!(ch || ra) || el.checked) && cb(n, normalize(ch && val === '' ? 'on' : val))
+        }
+        break;
+      case 'textarea':
+        cb(n, normalize(el.value))
+        break;
+      case 'select':
+        if (el.type.toLowerCase() === 'select-one') {
+          optCb(el.selectedIndex >= 0 ? el.options[el.selectedIndex] : null)
+        } else {
+          for (var i = 0; el.length && i < el.length; i++) {
+            el.options[i].selected && optCb(el.options[i])
+          }
+        }
+        break;
+      }
+    }
+
+    // collect up all form elements found from the passed argument elements all
+    // the way down to child elements; pass a '<form>' or form fields.
+    // called with 'this'=callback to use for serial() on each element
+    function eachFormElement() {
+      var cb = this
+        , e, i, j
+        , serializeSubtags = function (e, tags) {
+          for (var i = 0; i < tags.length; i++) {
+            var fa = e[byTag](tags[i])
+            for (j = 0; j < fa.length; j++) serial(fa[j], cb)
+          }
+        }
+
+      for (i = 0; i < arguments.length; i++) {
+        e = arguments[i]
+        if (/input|select|textarea/i.test(e.tagName)) serial(e, cb)
+        serializeSubtags(e, [ 'input', 'select', 'textarea' ])
+      }
+    }
+
+    // standard query string style serialization
+    function serializeQueryString() {
+      return reqwest.toQueryString(reqwest.serializeArray.apply(null, arguments))
+    }
+
+    // { 'name': 'value', ... } style serialization
+    function serializeHash() {
+      var hash = {}
+      eachFormElement.apply(function (name, value) {
+        if (name in hash) {
+          hash[name] && !isArray(hash[name]) && (hash[name] = [hash[name]])
+          hash[name].push(value)
+        } else hash[name] = value
+      }, arguments)
+      return hash
+    }
+
+    // [ { name: 'name', value: 'value' }, ... ] style serialization
+    reqwest.serializeArray = function () {
+      var arr = []
+      eachFormElement.apply(function (name, value) {
+        arr.push({name: name, value: value})
+      }, arguments)
+      return arr
+    }
+
+    reqwest.serialize = function () {
+      if (arguments.length === 0) return ''
+      var opt, fn
+        , args = Array.prototype.slice.call(arguments, 0)
+
+      opt = args.pop()
+      opt && opt.nodeType && args.push(opt) && (opt = null)
+      opt && (opt = opt.type)
+
+      if (opt == 'map') fn = serializeHash
+      else if (opt == 'array') fn = reqwest.serializeArray
+      else fn = serializeQueryString
+
+      return fn.apply(null, args)
+    }
+
+    reqwest.toQueryString = function (o) {
+      var qs = '', i
+        , enc = encodeURIComponent
+        , push = function (k, v) {
+            qs += enc(k) + '=' + enc(v) + '&'
+          }
+
+      if (isArray(o)) {
+        for (i = 0; o && i < o.length; i++) push(o[i].name, o[i].value)
+      } else {
+        for (var k in o) {
+          if (!Object.hasOwnProperty.call(o, k)) continue;
+          var v = o[k]
+          if (isArray(v)) {
+            for (i = 0; i < v.length; i++) push(k, v[i])
+          } else push(k, o[k])
+        }
+      }
+
+      // spaces should be + according to spec
+      return qs.replace(/&$/, '').replace(/%20/g, '+')
+    }
+
+    reqwest.getcallbackPrefix = function (reqId) {
+      return callbackPrefix
+    }
+
+    // jQuery and Zepto compatibility, differences can be remapped here so you can call
+    // .ajax.compat(options, callback)
+    reqwest.compat = function (o, fn) {
+      if (o) {
+        o.type && (o.method = o.type) && delete o.type
+        o.dataType && (o.type = o.dataType)
+        o.jsonpCallback && (o.jsonpCallbackName = o.jsonpCallback) && delete o.jsonpCallback
+        o.jsonp && (o.jsonpCallback = o.jsonp)
+      }
+      return new Reqwest(o, fn)
+    }
+
+    return reqwest
+  });
+
+  provide("reqwest", module.exports);
+
+  !function ($) {
+    var r = require('reqwest')
+      , integrate = function(method) {
+          return function() {
+            var args = Array.prototype.slice.call(arguments, 0)
+              , i = (this && this.length) || 0
+            while (i--) args.unshift(this[i])
+            return r[method].apply(null, args)
+          }
+        }
+      , s = integrate('serialize')
+      , sa = integrate('serializeArray')
+
+    $.ender({
+        ajax: r
+      , serialize: r.serialize
+      , serializeArray: r.serializeArray
+      , toQueryString: r.toQueryString
+    })
+
+    $.ender({
+        serialize: s
+      , serializeArray: sa
+    }, true)
+  }(ender);
+
+}());
+
+(function () {
+
+  var module = { exports: {} }, exports = module.exports;
+
+  !function ($) {
+
+    if ( $.rails !== undefined ) {
+      $.error('jquery-ujs has already been loaded!');
+    }
+
+    // Shorthand to make it a little easier to call public rails functions from within rails.js
+    var rails;
+
+    $.rails = rails = {
+      // Link elements bound by jquery-ujs
+      linkClickSelector: 'a[data-confirm], a[data-method], a[data-remote], a[data-disable-with]',
+
+      // Select elements bound by jquery-ujs
+      inputChangeSelector: 'select[data-remote], input[data-remote], textarea[data-remote]',
+
+      // Form elements bound by jquery-ujs
+      formSubmitSelector: 'form',
+
+      // Form input elements bound by jquery-ujs
+      formInputClickSelector: 'form input[type=submit], form input[type=image], form button[type=submit], form button:not([type])',
+
+      // Form input elements disabled during form submission
+      disableSelector: 'input[data-disable-with], button[data-disable-with], textarea[data-disable-with]',
+
+      // Form input elements re-enabled after form submission
+      enableSelector: 'input[data-disable-with]:disabled, button[data-disable-with]:disabled, textarea[data-disable-with]:disabled',
+
+      // Form required input elements
+      requiredInputSelector: 'input[name][required]:not([disabled]),textarea[name][required]:not([disabled])',
+
+      // Form file input elements
+      fileInputSelector: 'input[type=file]',
+
+      // Link onClick disable selector with possible reenable after remote submission
+      linkDisableSelector: 'a[data-disable-with]',
+
+      // Make sure that every Ajax request sends the CSRF token
+      CSRFProtection: function(xhr) {
+        var token = $('meta[name="csrf-token"]').attr('content');
+        if (token) xhr.setRequestHeader('X-CSRF-Token', token);
+      },
+
+      // Triggers an event on an element and returns false if the event result is false
+      fire: function(obj, event, data) {
+        result = obj.trigger(event, data);
+        return result !== false;
+      },
+
+      // Default confirm dialog, may be overridden with custom confirm dialog in $.rails.confirm
+      confirm: function(message) {
+        return confirm(message);
+      },
+
+      // Default ajax function, may be overridden with custom function in $.rails.ajax
+      ajax: function(options) {
+        return $.ajax(options);
+      },
+
+      // Default way to get an element's href. May be overridden at $.rails.href.
+      href: function(element) {
+        return element.attr('href');
+      },
+
+      // Submits "remote" forms and links with ajax
+      handleRemote: function(element) {
+        var method, url, data, elCrossDomain, crossDomain, withCredentials, dataType, options;
+
+        if (rails.fire(element, 'ajax:before')) {
+          elCrossDomain = element.data('cross-domain');
+          crossDomain = elCrossDomain === undefined ? null : elCrossDomain;
+          withCredentials = element.data('with-credentials') || null;
+          dataType = element.data('type') || 'json';
+
+          if (element.is('form')) {
+            method = element.attr('method');
+            url = element.attr('action');
+            data = element.serializeArray();
+            // memoized value from clicked submit button
+            var button = element.data('ujs:submit-button');
+            if (button) {
+              data.push(button);
+              element.data('ujs:submit-button', null);
+            }
+          } else if (element.is(rails.inputChangeSelector)) {
+            method = element.data('method');
+            url = element.data('url');
+            data = element.serialize();
+            if (element.data('params')) data = data + "&" + element.data('params');
+          } else {
+            method = element.data('method');
+            url = rails.href(element);
+            data = element.data('params') || null;
+          }
+
+          options = {
+            type: method || 'GET', data: data, dataType: dataType,
+            // stopping the "ajax:beforeSend" event will cancel the ajax request
+            beforeSend: function(xhr, settings) {
+              if (settings.dataType === undefined) {
+                xhr.setRequestHeader('accept', '*/*;q=0.5, ' + settings.accepts.script);
+              }
+              return rails.fire(element, 'ajax:beforeSend', [xhr, settings]);
+            },
+            success: function(data, status, xhr) {
+              element.trigger('ajax:success', [data, status, xhr]);
+            },
+            complete: function(xhr, status) {
+              element.trigger('ajax:complete', [xhr, status]);
+            },
+            error: function(xhr, status, error) {
+              element.trigger('ajax:error', [xhr, status, error]);
+            },
+            crossDomain: crossDomain
+          };
+
+          // There is no withCredentials for IE6-8 when
+          // "Enable native XMLHTTP support" is disabled
+          if (withCredentials) {
+            options.xhrFields = {
+              withCredentials: withCredentials
+            };
+          }
+
+          // Only pass url to `ajax` options if not blank
+          if (url) { options.url = url; }
+
+          var jqxhr = rails.ajax(options);
+          element.trigger('ajax:send', jqxhr);
+          return jqxhr;
+        } else {
+          return false;
+        }
+      },
+
+      // Handles "data-method" on links such as:
+      // <a href="/users/5" data-method="delete" rel="nofollow" data-confirm="Are you sure?">Delete</a>
+      handleMethod: function(link) {
+        var href = rails.href(link),
+          method = link.data('method'),
+          target = link.attr('target'),
+          csrf_token = $('meta[name=csrf-token]').attr('content'),
+          csrf_param = $('meta[name=csrf-param]').attr('content'),
+          form = $.create('<form method="post" action="' + href + '"></form>'),
+          metadata_input = '<input name="_method" value="' + method + '" type="hidden" />';
+
+        if (csrf_param !== undefined && csrf_token !== undefined) {
+          metadata_input += '<input name="' + csrf_param + '" value="' + csrf_token + '" type="hidden" />';
+        }
+
+        if (target) { form.attr('target', target); }
+
+        form.hide().append(metadata_input).appendTo('body');
+        form[0].submit();
+      },
+
+      /* Disables form elements:
+  - Caches element value in 'ujs:enable-with' data store
+  - Replaces element text with value of 'data-disable-with' attribute
+  - Sets disabled property to true
+  */
+      disableFormElements: function(form) {
+        form.find(rails.disableSelector).each(function() {
+          var element = $(this), method = element.is('button') ? 'html' : 'val';
+          element.data('ujs:enable-with', element[method]());
+          element[method](element.data('disable-with'));
+          element.attr('disabled', true);
+        });
+      },
+
+      /* Re-enables disabled form elements:
+  - Replaces element text with cached value from 'ujs:enable-with' data store (created in `disableFormElements`)
+  - Sets disabled property to false
+  */
+      enableFormElements: function(form) {
+        form.find(rails.enableSelector).each(function() {
+          var element = $(this), method = element.is('button') ? 'html' : 'val';
+          if (element.data('ujs:enable-with')) element[method](element.data('ujs:enable-with'));
+          element.attr('disabled', false);
+        });
+      },
+
+     /* For 'data-confirm' attribute:
+  - Fires `confirm` event
+  - Shows the confirmation dialog
+  - Fires the `confirm:complete` event
+
+  Returns `true` if no function stops the chain and user chose yes; `false` otherwise.
+  Attaching a handler to the element's `confirm` event that returns a `falsy` value cancels the confirmation dialog.
+  Attaching a handler to the element's `confirm:complete` event that returns a `falsy` value makes this function
+  return false. The `confirm:complete` event is fired whether or not the user answered true or false to the dialog.
+  */
+      allowAction: function(element) {
+        var message = element.data('confirm'),
+            answer = false, callback;
+        if (!message) { return true; }
+
+        if (rails.fire(element, 'confirm')) {
+          answer = rails.confirm(message);
+          callback = rails.fire(element, 'confirm:complete', [answer]);
+        }
+        return answer && callback;
+      },
+
+      // Helper function which checks for blank inputs in a form that match the specified CSS selector
+      blankInputs: function(form, specifiedSelector, nonBlank) {
+        var inputs = $(), input, valueToCheck,
+            selector = specifiedSelector || 'input,textarea',
+            allInputs = form.find(selector);
+
+        allInputs.each(function() {
+          input = $(this);
+          valueToCheck = input.is('input[type=checkbox],input[type=radio]') ? input.is(':checked') : input.val();
+          // If nonBlank and valueToCheck are both truthy, or nonBlank and valueToCheck are both falsey
+          if (!valueToCheck === !nonBlank) {
+
+            // Don't count unchecked required radio if other radio with same name is checked
+            if (input.is('input[type=radio]') && allInputs.filter('input[type=radio]:checked[name="' + input.attr('name') + '"]').length) {
+              return true; // Skip to next input
+            }
+
+            inputs = inputs.add(input);
+          }
+        });
+        return inputs.length ? inputs : false;
+      },
+
+      // Helper function which checks for non-blank inputs in a form that match the specified CSS selector
+      nonBlankInputs: function(form, specifiedSelector) {
+        return rails.blankInputs(form, specifiedSelector, true); // true specifies nonBlank
+      },
+
+      // Helper function, needed to provide consistent behavior in IE
+      stopEverything: function(e) {
+        $(e.target).trigger('ujs:everythingStopped');
+        e.stopImmediatePropagation();
+        return false;
+      },
+
+      // find all the submit events directly bound to the form and
+      // manually invoke them. If anyone returns false then stop the loop
+      callFormSubmitBindings: function(form, event) {
+        var events = form.data('events'), continuePropagation = true;
+        if (events !== undefined && events['submit'] !== undefined) {
+          $.each(events['submit'], function(i, obj){
+            if (typeof obj.handler === 'function') return continuePropagation = obj.handler(event);
+          });
+        }
+        return continuePropagation;
+      },
+
+      // replace element's html with the 'data-disable-with' after storing original html
+      // and prevent clicking on it
+      disableElement: function(element) {
+        element.data('ujs:enable-with', element.html()); // store enabled state
+        element.html(element.data('disable-with')); // set to disabled state
+        element.bind('click.railsDisable', function(e) { // prevent further clicking
+          return rails.stopEverything(e);
+        });
+      },
+
+      // restore element to its original state which was disabled by 'disableElement' above
+      enableElement: function(element) {
+        if (element.data('ujs:enable-with') !== undefined) {
+          element.html(element.data('ujs:enable-with')); // set to old enabled state
+          element.removeData('ujs:enable-with'); // clean up cache
+        }
+        element.unbind('click.railsDisable'); // enable element
+      }
+
+    };
+
+    if (rails.fire($(document), 'rails:attachBindings')) {
+
+      // TODO : transfer to ender
+      //$.ajaxPrefilter(function(options, originalOptions, xhr){ if ( !options.crossDomain ) { rails.CSRFProtection(xhr); }});
+
+      $(document).delegate(rails.linkDisableSelector, 'ajax:complete', function() {
+          rails.enableElement($(this));
+      });
+
+      $(document).delegate(rails.linkClickSelector, 'click.rails', function(e) {
+        e.preventDefault();
+        var link = $(this), method = link.data('method'), data = link.data('params');
+        if (!rails.allowAction(link)) return rails.stopEverything(e);
+
+        if (link.is(rails.linkDisableSelector)) rails.disableElement(link);
+
+        if (link.data('remote') !== undefined) {
+          if ( (e.metaKey || e.ctrlKey) && (!method || method === 'GET') && !data ) { return true; }
+
+          var handleRemote = rails.handleRemote(link);
+          // response from rails.handleRemote() will either be false or a deferred object promise.
+          if (handleRemote === false) {
+            rails.enableElement(link);
+          } else {
+            handleRemote.fail( function() { rails.enableElement(link); } );
+          }
+          return false;
+
+        } else if (link.data('method')) {
+          rails.handleMethod(link);
+          return false;
+        }
+      });
+
+      $(document).delegate(rails.inputChangeSelector, 'change.rails', function(e) {
+        var link = $(this);
+        if (!rails.allowAction(link)) return rails.stopEverything(e);
+
+        rails.handleRemote(link);
+        return false;
+      });
+
+      $(document).delegate(rails.formSubmitSelector, 'submit.rails', function(e) {
+        var form = $(this),
+          remote = form.data('remote') !== undefined,
+          blankRequiredInputs = rails.blankInputs(form, rails.requiredInputSelector),
+          nonBlankFileInputs = rails.nonBlankInputs(form, rails.fileInputSelector);
+
+        if (!rails.allowAction(form)) return rails.stopEverything(e);
+
+        // skip other logic when required values are missing or file upload is present
+        if (blankRequiredInputs && form.attr("novalidate") == undefined && rails.fire(form, 'ajax:aborted:required', [blankRequiredInputs])) {
+          return rails.stopEverything(e);
+        }
+
+        if (remote) {
+          if (nonBlankFileInputs) {
+            // slight timeout so that the submit button gets properly serialized
+            // (make it easy for event handler to serialize form without disabled values)
+            setTimeout(function(){ rails.disableFormElements(form); }, 13);
+            var aborted = rails.fire(form, 'ajax:aborted:file', [nonBlankFileInputs]);
+
+            // re-enable form elements if event bindings return false (canceling normal form submission)
+            if (!aborted) { setTimeout(function(){ rails.enableFormElements(form); }, 13); }
+
+            return aborted;
+          }
+
+          // If browser does not support submit bubbling, then this live-binding will be called before direct
+          // bindings. Therefore, we should directly call any direct bindings before remotely submitting form.
+          if ($().jquery && !$.support.submitBubbles && $().jquery < '1.7' && rails.callFormSubmitBindings(form, e) === false) return rails.stopEverything(e);
+
+          rails.handleRemote(form);
+          return false;
+
+        } else {
+          // slight timeout so that the submit button gets properly serialized
+          setTimeout(function(){ rails.disableFormElements(form); }, 13);
+        }
+      });
+
+      $(document).delegate(rails.formInputClickSelector, 'click.rails', function(event) {
+        var button = $(this);
+
+        if (!rails.allowAction(button)) return rails.stopEverything(event);
+
+        // register the pressed submit button
+        var name = button.attr('name'),
+          data = name ? {name:name, value:button.val()} : null;
+
+        button.closest('form').data('ujs:submit-button', data);
+      });
+
+      $(document).delegate(rails.formSubmitSelector, 'ajax:beforeSend.rails', function(event) {
+        if (this == event.target) rails.disableFormElements($(this));
+      });
+
+      $(document).delegate(rails.formSubmitSelector, 'ajax:complete.rails', function(event) {
+        if (this == event.target) rails.enableFormElements($(this));
+      });
+
+      $(function(){
+        // making sure that all forms have actual up-to-date token(cached forms contain old one)
+        var csrf_token = $('meta[name=csrf-token]').attr('content');
+        var csrf_param = $('meta[name=csrf-param]').attr('content');
+        $('form input[name="' + csrf_param + '"]').val(csrf_token);
+      });
+    }
+
+
+
+  }(window.ender || window.jQuery || window.Zepto);
+
+  provide("ender-ujs", module.exports);
+
+  !function ($) {
+
+    $.ender({
+
+    })
+
+  }(ender);
 }());

@@ -24,4 +24,4 @@
             = current_user.roles
         - else
           %li= link_to('Login', new_user_session_path)
-          %li= link_to('Sign up', new_user_registration_path)
+          %li= link_to('Sign up', new_user_registration_path, :remote => true)

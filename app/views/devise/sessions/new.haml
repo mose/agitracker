@@ -1,7 +1,7 @@
 .row
   .span16
     %h1 Sign in
-    = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+    = form_for(resource, :as => resource_name, :url => session_path(resource_name), :remote => true) do |f|
       .clearfix
         = f.label :email
         .input= f.email_field :email

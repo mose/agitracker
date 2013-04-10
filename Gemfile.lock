@@ -1,6 +1,5 @@
-GIT
-  remote: https://github.com/mose/ender-rails.git
-  revision: daca602a91c2eaa4d49817a6e1c5135343c6c1b8
+PATH
+  remote: ../../projects/ender-rails
   specs:
     ender-rails (0.0.1)
       rake (~> 10.0.0)
