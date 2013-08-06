@@ -25,6 +25,8 @@ end
 
 gem 'anjlab-bootstrap-rails', '>= 2.3', :require => 'bootstrap-rails'
 
+#gem 'rails-i18nterface', path: '../../projects/rails-i18nterface'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -51,7 +53,7 @@ group :tests do
 	gem 'turn'
 	gem 'rspec-rails'
 	gem 'webrat'
-	gem 'simplecov' 
+	gem 'simplecov'
 	gem 'factory_girl_rails'
   gem 'capybara'
 end
