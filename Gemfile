@@ -1,10 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.18'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
 gem 'mysql2'
 gem 'bluecloth'
 gem 'devise'
@@ -12,23 +11,20 @@ gem 'cancan'
 # gem 'cantango'
 gem 'haml'
 gem 'simple_form'
-#gem 'ender-rails', git: 'https://github.com/mose/ender-rails.git'
-gem 'ender-rails', path: '../../projects/ender-rails'
+gem 'ender-rails', git: 'https://github.com/mose/ender-rails.git'
+#gem 'ender-rails', path: '../../projects/ender-rails'
+gem 'dotenv-rails'
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails'
-  gem 'coffee-rails'
-  gem 'uglifier'
-end
-
-gem 'anjlab-bootstrap-rails', '>= 2.3', :require => 'bootstrap-rails'
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'bootstrap-sass'
+gem 'haml-rails'
+gem 'uglifier'
 
 #gem 'rails-i18nterface', path: '../../projects/rails-i18nterface'
 
 # To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
+#gem 'bcrypt-ruby', git: 'https://github.com/codahale/bcrypt-ruby.git', :require => 'bcrypt'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -40,20 +36,21 @@ gem 'anjlab-bootstrap-rails', '>= 2.3', :require => 'bootstrap-rails'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 group :development do
+  gem 'sqlite3'
   gem 'rspec-rails'
   gem 'log_buddy'
   gem 'annotate'
   gem 'faker'
   gem 'rails_best_practices'
-  gem 'haml-rails'
   gem "better_errors"
+  gem "awesome_print"
 end
 
-group :tests do
-	gem 'turn'
-	gem 'rspec-rails'
+group :test do
 	gem 'webrat'
 	gem 'simplecov'
 	gem 'factory_girl_rails'
   gem 'capybara'
+  gem 'nokogiri'
+  gem 'mini_portile'
 end
