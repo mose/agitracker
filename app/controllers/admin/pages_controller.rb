@@ -2,7 +2,7 @@ class Admin::PagesController < ApplicationController
 
   load_and_authorize_resource
 
-  before_filter :get_page_from_id, :only => [ :show, :edit, :update, :destroy ]
+  before_filter :get_page_from_id, only: [ :show, :edit, :update, :destroy ]
   before_filter :authenticate_user!
 
   def index
@@ -20,7 +20,7 @@ class Admin::PagesController < ApplicationController
   end
 
   def create
-    Page.create(params[:page])
+    Page.create(page_params)
     flash[:success] = "ok, saved."
     redirect_to admin_pages_path
   end
@@ -30,12 +30,12 @@ class Admin::PagesController < ApplicationController
   end
 
   def update
-    if @page.update_attributes(params[:page])
+    if @page.update_attributes(page_params)
       flash[:success] = "ok, saved."
       redirect_to admin_page_path @page
     else
       flash[:failure] = "failed to save"
-      render :edit, :id => @page.id
+      render :edit, id: @page.id
     end
   end
 
@@ -49,6 +49,10 @@ class Admin::PagesController < ApplicationController
 
   def get_page_from_id
     @page = Page.find(params[:id])
+  end
+
+  def page_params
+    params[:page].permit(:name, :title, :descriptin, :content)
   end
 
 end
