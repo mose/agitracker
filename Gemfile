@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.18'
+gem 'rails', '4.1.1'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
@@ -15,7 +15,7 @@ gem 'ender-rails', git: 'https://github.com/mose/ender-rails.git'
 #gem 'ender-rails', path: '../../projects/ender-rails'
 gem 'dotenv-rails'
 
-gem 'sass-rails'
+gem 'sass-rails', github: "rails/sass-rails"
 gem 'coffee-rails'
 gem 'bootstrap-sass'
 gem 'haml-rails'
