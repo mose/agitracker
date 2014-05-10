@@ -16,10 +16,10 @@ gem 'ender-rails', git: 'https://github.com/mose/ender-rails.git'
 gem 'dotenv-rails'
 
 gem 'sass-rails', github: "rails/sass-rails"
-gem 'coffee-rails'
+gem 'coffee-rails', '~> 4.0.0'
 gem 'bootstrap-sass'
 gem 'haml-rails'
-gem 'uglifier'
+gem 'uglifier', '>= 1.3.0'
 
 #gem 'rails-i18nterface', path: '../../projects/rails-i18nterface'
 

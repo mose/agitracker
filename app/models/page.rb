@@ -1,7 +1,5 @@
 class Page < ActiveRecord::Base
-  default_scope :order => 'created_at DESC'
-
-  attr_accessible :name, :title, :content
+  default_scope { order('created_at DESC') }
 
   name_regexp = /\A[a-z\d\-_]+\z/
   validates :name, :presence => true,

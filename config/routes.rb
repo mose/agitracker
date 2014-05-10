@@ -6,7 +6,7 @@ Agitracker::Application.routes.draw do
     resources :pages, :users
   end
 
-  match'/pages/:name' => 'pages#show', :as => "page"
+  get '/pages/:name' => 'pages#show', :as => "page"
 
   root :to => 'pages#show', :name => "home"
 

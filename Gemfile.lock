@@ -212,7 +212,7 @@ DEPENDENCIES
   bootstrap-sass
   cancan
   capybara
-  coffee-rails
+  coffee-rails (~> 4.0.0)
   devise
   dotenv-rails
   ender-rails!
@@ -231,5 +231,5 @@ DEPENDENCIES
   simple_form
   simplecov
   sqlite3
-  uglifier
+  uglifier (>= 1.3.0)
   webrat

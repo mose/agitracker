@@ -3,7 +3,7 @@ require 'spec_helper'
 describe User do
   describe "the 'Name' attribute" do
     before :each do
-      @user = FactoryGirl.build(:user)
+      @user = build(:user)
     end
     it "should exist on the User model" do
       @user.should respond_to(:name)
@@ -11,7 +11,7 @@ describe User do
     end
     it "should be unique" do
       @user.save
-      user2 = FactoryGirl.build(:user, :email=>'diff@example.com')
+      user2 = build(:user, :email=>'diff@example.com')
       user2.valid?.should be_false
       user2.errors[:name].should include("has already been taken")
     end

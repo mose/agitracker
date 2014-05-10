@@ -1,4 +1,5 @@
 Agitracker::Application.configure do
+  config.eager_load = false
   # Settings specified here will take precedence over those in config/application.rb
 
   # In the development environment your application's code is reloaded on
@@ -20,10 +21,9 @@ Agitracker::Application.configure do
   config.active_support.deprecation = :log
 
   # Only use best-standards-support built into browsers
-  config.action_dispatch.best_standards_support = :builtin
 
   # Do not compress assets
-  config.assets.compress = false
+  config.assets.js_compressor = false
 
   # Expands the lines which load the assets
   config.assets.debug = true
