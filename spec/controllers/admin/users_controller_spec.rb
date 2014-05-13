@@ -50,13 +50,13 @@ describe Admin::UsersController do
         @user = create(:user)
       end
       it "saves the changes if all is good" do
-        post :update, { :id => @user, :user => { :name => "newname" } }
+        post :update, { :id => @user, :name => "newname" }
         User.find(@user.id).name.should == "newname"
         flash[:success].should_not be_nil
         response.should redirect_to(:action => :show, :id => assigns[:user].id)
       end
       it "refuses to save user if somthing is wrong" do
-        post :update, { :id => @user, :user => { :name => "" } }
+        post :update, { :id => @user,  :name => ""  }
         User.find(@user.id).name.should == @user.name
         flash[:failure].should_not be_nil
         response.should be_success
@@ -84,7 +84,7 @@ describe Admin::UsersController do
         @user = build(:user)
       end
       it "saves created user" do
-        expect{ post :create, {:user => attributes_for(:user)} }.to change(User, :count).by(+1)
+        expect{ post :create, { name: 'bob', email: 'bob@bobo.eu', password: '12345678' } }.to change(User, :count).by(+1)
         flash[:success].should_not be_nil
         response.should redirect_to(admin_users_path)
       end

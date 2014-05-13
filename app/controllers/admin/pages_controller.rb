@@ -52,7 +52,7 @@ class Admin::PagesController < ApplicationController
   end
 
   def page_params
-    params[:page].permit(:name, :title, :descriptin, :content)
+    params.permit(:name, :title, :description, :content)
   end
 
 end
