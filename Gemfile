@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '=4.1.5'
+gem 'rails', '=4.2.4'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
@@ -15,13 +15,13 @@ gem 'ender-rails', git: 'https://github.com/mose/ender-rails.git'
 #gem 'ender-rails', path: '../../projects/ender-rails'
 gem 'dotenv-rails'
 
-gem 'sass-rails', github: "rails/sass-rails"
-gem 'coffee-rails', '~> 4.0.0'
+gem 'sass-rails'
+gem 'coffee-rails'
 gem 'bootstrap-sass'
 gem 'haml-rails'
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier'
 
-#gem 'rails-i18nterface', path: '../../projects/rails-i18nterface'
+#gem 'rails-i18nterface', path: '..//rails-i18nterface'
 
 # To use ActiveModel has_secure_password
 #gem 'bcrypt-ruby', git: 'https://github.com/codahale/bcrypt-ruby.git', :require => 'bcrypt'
