@@ -5,6 +5,13 @@ GIT
     ender-rails (0.0.2)
       rake (>= 10.0.0, < 10.2.0)
 
+PATH
+  remote: ..//rails-i18nterface
+  specs:
+    rails-i18nterface (0.2.5)
+      railties (>= 3.1.0)
+      rake (>= 3.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -254,6 +261,7 @@ DEPENDENCIES
   mysql2
   nokogiri
   rails (= 4.2.4)
+  rails-i18nterface!
   rails_best_practices
   rspec-rails
   sass-rails

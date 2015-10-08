@@ -21,7 +21,7 @@ gem 'bootstrap-sass'
 gem 'haml-rails'
 gem 'uglifier'
 
-#gem 'rails-i18nterface', path: '..//rails-i18nterface'
+gem 'rails-i18nterface', path: '..//rails-i18nterface'
 
 # To use ActiveModel has_secure_password
 #gem 'bcrypt-ruby', git: 'https://github.com/codahale/bcrypt-ruby.git', :require => 'bcrypt'
