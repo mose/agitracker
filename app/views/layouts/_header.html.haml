@@ -1,14 +1,14 @@
 .navbar
   .navbar-inner
     .container
-      = link_to "agitracker", root_path, :class => "brand"
-      %ul.nav
+      .navbar-header
+        = link_to "agitracker", root_path, :class => "brand"
+      %ul.nav.navbar-nav
         - %w{home about contact}.each do |p|
           - if (!page.nil? and page.name === p)
             %li.active= link_to p.capitalize, page_path(p)
           - else
             %li= link_to p.capitalize, page_path(p)
-      %ul.nav.secondary-nav
         - if user_signed_in?
           %li= link_to('Logout', destroy_user_session_path, :method=>'delete')
           %li= link_to('Edit ' + current_user.name, edit_user_registration_path)
