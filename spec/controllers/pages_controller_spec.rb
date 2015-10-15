@@ -10,7 +10,7 @@ describe PagesController do
     end
     it "displays a page with proper title" do
       get :show, { :name => "home" }
-      response.should have_selector("title", :content => "Agitracker: Home")
+      expect(response).to have_selector("title", :content => "Agitracker: Home")
     end
   end
 
