@@ -86,6 +86,7 @@ GEM
       execjs
     coffee-script-source (1.9.1.1)
     colored (1.2)
+    database_cleaner (1.5.0)
     devise (3.5.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -249,6 +250,7 @@ DEPENDENCIES
   cancan
   capybara
   coffee-rails
+  database_cleaner
   devise
   dotenv-rails
   ender-rails!

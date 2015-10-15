@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe PagesController do
-  render_views
 
   describe "GET 'home'" do
+    Page.create(name: 'home')
     it "returns http success" do
-      get :show,  { :name => :home }
+      get :show,  { name: 'home' }
       response.should be_success
     end
     it "displays a page with proper title" do

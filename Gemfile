@@ -50,6 +50,7 @@ group :test do
 	gem 'webrat'
 	gem 'simplecov'
 	gem 'factory_girl_rails'
+  gem 'database_cleaner'
   gem 'capybara'
   gem 'nokogiri'
   gem 'mini_portile'

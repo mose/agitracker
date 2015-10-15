@@ -47,10 +47,31 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   # hack for loading db in memory
-  config = YAML::load(IO.read(Rails.root.join("config/database.yml")))
-  ActiveRecord::Base.establish_connection(config["test"])
+  conf = YAML::load(IO.read(Rails.root.join("config/database.yml")))
+  ActiveRecord::Base.establish_connection(conf["test"])
   ActiveRecord::Schema.verbose = false
   load(Rails.root.join("db/schema.rb"))
   load(Rails.root.join("db/seeds.rb"))
 
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each, js: true) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+
+  config.render_views
 end
