@@ -2,23 +2,21 @@ require 'spec_helper'
 
 describe User do
   describe "the 'Name' attribute" do
-    before :each do
-      @user = build(:user)
-    end
+    let(:user) { build(:user) }
     it "should exist on the User model" do
-      @user.should respond_to(:name)
-      @user.should respond_to(:name=)
+      expect(user).to respond_to(:name)
+      expect(user).to respond_to(:name=)
     end
     it "should be unique" do
-      @user.save
+      user.save
       user2 = build(:user, :email=>'diff@example.com')
-      user2.valid?.should be_false
-      user2.errors[:name].should include("has already been taken")
+      expect(user2.valid?).to be_falsey
+      expect(user2.errors[:name]).to include("has already been taken")
     end
     it "should be required" do
-      @user.name=nil
-      @user.valid?.should be_false
-      @user.errors[:name].should include("can't be blank")
+      user.name = nil
+      expect(user.valid?).to be_falsey
+      expect(user.errors[:name]).to include("can't be blank")
     end
   end
 end
