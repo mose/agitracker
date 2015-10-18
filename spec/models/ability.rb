@@ -2,40 +2,35 @@ require 'spec_helper'
 require "cancan/matchers"
 
 describe Ability do
+  let(:ability) { Ability.new(user) }
 
   describe "Guest user" do
-    before :each do
-      @user = Factory.build(:user)
-      @ability = Ability.new(@user)
-    end
+    let(:user) { build(:user) }
 
     it "can read pages" do
-      @ability.should be_able_to(:read, Page)
+      expect(ability).to be_able_to(:read, Page)
     end
 
     it "cannot update or destroy pages" do
-      @ability.should_not be_able_to(:update, Page)
-      @ability.should_not be_able_to(:destroy, Page)
+      expect(ability).not_to be_able_to(:update, Page)
+      expect(ability).not_to be_able_to(:destroy, Page)
     end
 
     it "cannot list users" do
-      @ability.should_not be_able_to(:read, User)
+      expect(ability).not_to be_able_to(:read, User)
     end
   end
 
   describe "Editor user" do
-    before :each do
-      @user = Factory.build(:editor)
-      @ability = Ability.new(@user)
-    end
+    let(:user) { build(:editor) }
 
     it "can update or destroy pages" do
-      @ability.should be_able_to(:update, Page)
-      @ability.should be_able_to(:destroy, Page)
+      expect(ability).to be_able_to(:update, Page)
+      expect(ability).to be_able_to(:destroy, Page)
     end
 
     it "cannot list users" do
-      @ability.should_not be_able_to(:read, User)
+      expect(ability).not_to be_able_to(:read, User)
     end
   end
 

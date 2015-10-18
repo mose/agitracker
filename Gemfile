@@ -7,7 +7,7 @@ gem 'rails', '=4.2.4'
 gem 'mysql2'
 gem 'bluecloth'
 gem 'devise'
-gem 'cancan'
+gem 'cancancan'
 # gem 'cantango'
 gem 'haml'
 gem 'simple_form'
@@ -21,7 +21,7 @@ gem 'bootstrap-sass'
 gem 'haml-rails'
 gem 'uglifier'
 
-gem 'rails-i18nterface', path: '..//rails-i18nterface'
+gem 'rails-i18nterface', path: '../rails-i18nterface'
 
 # To use ActiveModel has_secure_password
 #gem 'bcrypt-ruby', git: 'https://github.com/codahale/bcrypt-ruby.git', :require => 'bcrypt'
