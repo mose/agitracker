@@ -7,41 +7,41 @@ describe Admin::PagesController do
   describe "index listing pages" do
     it "returns http success" do
       get :index
-      response.should be_success
+      expect(response).to be_success
     end
     it "loads a page" do
       get :index
-      response.should have_selector("title", :content => "Agitracker: Pages list")
+      expect(response.body).to have_selector("head title", text: "Agitracker: Pages list", visible: false)
     end
     it "contains 4 default links to initial pages" do
       get :index
-      response.should have_selector(".page-entry", :count => "4")
+      expect(response.body).to have_selector(".page-entry", :count => "4")
     end
   end
 
   describe "show a page" do
     it "returns http success" do
       get :show, { :id => 1 }
-      response.should be_success
+      expect(response).to be_success
     end
     it "loads a page" do
       get :show, { :id => 1 }
-      response.should have_selector("title", :content => "Agitracker: Show home")
+      expect(response).to have_selector("title", :content => "Agitracker: Show home")
     end
   end
 
   describe "edit a page" do
     it "returns http success" do
       get :edit, { :id => 1 }
-      response.should be_success
+      expect(response).to be_success
     end
     it "loads a page" do
       get :edit, { :id => 1 }
-      response.should have_selector("title", :content => "Agitracker: Edit home")
+      expect(response).to have_selector("title", :content => "Agitracker: Edit home")
     end
     it "contains a form" do
       get :edit, { :id => 1 }
-      response.should have_selector("form")
+      expect(response).to have_selector("form")
     end
 
     describe "update a page" do
@@ -51,14 +51,14 @@ describe Admin::PagesController do
       it "saves the changes" do
         post :update, { :id => @page,  :name => "newname"  }
         Page.find(@page.id).name.should == "newname"
-        flash[:success].should_not be_nil
-        response.should redirect_to(:action => :show, :id => assigns[:page].id)
+        expect(flash[:success]).not_to be_nil
+        expect(response).to redirect_to(:action => :show, :id => assigns[:page].id)
       end
       it "don't save if name is not all lowercases" do
         post :update, { :id => @page, :name => "NewName"  }
         Page.find(@page.id).name.should == @page.name
-        flash[:failure].should_not be_nil
-        response.should be_success
+        expect(flash[:success]).not_to be_nil
+        expect(response).to be_success
       end
 
     end
@@ -67,15 +67,15 @@ describe Admin::PagesController do
   describe "new page" do
     it "returns http success" do
       get :new
-      response.should be_success
+      expect(response).to be_success
     end
     it "loads a page" do
       get :new
-      response.should have_selector("title", :content => "Agitracker: New page")
+      expect(response).to have_selector("title", :content => "Agitracker: New page")
     end
     it "contains a form" do
       get :new
-      response.should have_selector("form")
+      expect(response).to have_selector("form")
     end
 
     describe "creates a new page" do
@@ -84,8 +84,8 @@ describe Admin::PagesController do
       end
       it "saves created page" do
         expect{ post :create, { name: 'test' } }.to change(Page, :count).by(+1)
-        flash[:success].should_not be_nil
-        response.should redirect_to(admin_pages_path)
+        expect(flash[:success]).not_to be_nil
+        expect(response).to redirect_to(admin_pages_path)
       end
     end
 
@@ -95,8 +95,8 @@ describe Admin::PagesController do
     it "deletes a page" do
       page = create(:page)
       expect{ delete :destroy, :id => page.id }.to change(Page, :count).by(-1)
-      flash[:success].should_not be_nil
-      response.should redirect_to(admin_pages_path)
+      expect(flash[:success]).not_to be_nil
+      expect(response).to redirect_to(admin_pages_path)
     end
   end
 
