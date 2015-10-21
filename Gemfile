@@ -44,6 +44,8 @@ group :development do
   gem 'rails_best_practices'
   gem "better_errors"
   gem "awesome_print"
+  gem "quiet_assets"
+  gem 'pry'
 end
 
 group :test do

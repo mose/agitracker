@@ -26,7 +26,7 @@ describe Admin::PagesController do
     end
     it "loads a page" do
       get :show, { :id => 1 }
-      expect(response).to have_selector("title", :content => "Agitracker: Show home")
+      expect(response.body).to have_selector("title", :text => "Agitracker: Show home")
     end
   end
 
