@@ -5,8 +5,8 @@ describe PagesController do
   describe "GET 'home'" do
     Page.create(name: 'home')
     it "returns http success" do
-      get :show,  { name: 'home' }
-      response.should be_success
+      get :show, { name: 'home' }
+      expect(response).to be_success
     end
     it "displays a page with proper title" do
       get :show, { :name => "home" }

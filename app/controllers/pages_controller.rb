@@ -2,7 +2,11 @@ class PagesController < ApplicationController
 
   def show
     @page = Page.where(page_params).first
-    @title = @page.name
+    if @page
+      @title = @page.name
+    else
+      render '404'
+    end
   end
 
   def page_params
