@@ -7,10 +7,11 @@ describe PagesController do
     it "returns http success" do
       get :show, { name: 'home' }
       expect(response).to be_success
+      expect(response).to render_template('pages/home')
     end
     it "displays a page with proper title" do
       get :show, { :name => "home" }
-      expect(response).to have_selector("title", :content => "Agitracker: Home")
+      expect(response.body).to have_selector("title", :text => "Agitracker: Home")
     end
   end
 
