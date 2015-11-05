@@ -7,26 +7,26 @@ describe Admin::UsersController do
   describe "lists users" do
     it "returns http success" do
       get :index
-      response.should be_success
+      expect(response).to be_success
     end
     it "loads a page" do
       get :index
-      response.should have_selector("title", :content => "Agitracker: Users list")
+      expect(response.body).to have_selector("title", :content => "Agitracker: Users list")
     end
     it "contains the default user" do
       get :index
-      response.should have_selector(".user-entry")
+      expect(response.body).to have_selector(".user-entry")
     end
   end
 
   describe "shows a user" do
     it "returns http success" do
       get :show, { :id => 1 }
-      response.should be_success
+      expect(response).to be_success
     end
     it "loads a page" do
       get :show, { :id => 1 }
-      response.should have_selector("title", :content => "Agitracker: Show admin")
+      expect(response.body).to have_selector("title", :content => "Agitracker: Show admin")
     end
 
   end
@@ -34,15 +34,15 @@ describe Admin::UsersController do
   describe "edits a user" do
     it "returns http success" do
       get :edit, { :id => 1 }
-      response.should be_success
+      expect(response).to be_success
     end
     it "loads a page" do
       get :edit, { :id => 1 }
-      response.should have_selector("title", :content => "Agitracker: Edit admin")
+      expect(response.body).to have_selector("title", :content => "Agitracker: Edit admin")
     end
     it "contains a form" do
       get :edit, { :id => 1 }
-      response.should have_selector("form")
+      expect(response.body).to have_selector("form")
     end
 
     describe "updates a user" do
@@ -53,13 +53,13 @@ describe Admin::UsersController do
         post :update, { :id => @user, :name => "newname" }
         User.find(@user.id).name.should == "newname"
         flash[:success].should_not be_nil
-        response.should redirect_to(:action => :show, :id => assigns[:user].id)
+        expect(response).to redirect_to(:action => :show, :id => assigns[:user].id)
       end
       it "refuses to save user if somthing is wrong" do
         post :update, { :id => @user,  :name => ""  }
         User.find(@user.id).name.should == @user.name
         flash[:failure].should_not be_nil
-        response.should be_success
+        expect(response).to be_success
       end
     end
 
@@ -68,15 +68,15 @@ describe Admin::UsersController do
   describe "GET 'new'" do
     it "returns http success" do
       get :new
-      response.should be_success
+      expect(response).to be_success
     end
     it "loads a page" do
       get :new
-      response.should have_selector("title", :content => "Agitracker: New user")
+      expect(response.body).to have_selector("title", :content => "Agitracker: New user")
     end
     it "contains a form" do
       get :new
-      response.should have_selector("form")
+      expect(response.body).to have_selector("form")
     end
 
     describe "creates a new user" do
@@ -86,7 +86,7 @@ describe Admin::UsersController do
       it "saves created user" do
         expect{ post :create, { name: 'bob', email: 'bob@bobo.eu', password: '12345678' } }.to change(User, :count).by(+1)
         flash[:success].should_not be_nil
-        response.should redirect_to(admin_users_path)
+        expect(response).to redirect_to(admin_users_path)
       end
     end
 
@@ -97,7 +97,7 @@ describe Admin::UsersController do
       user = create(:user)
       expect{ delete :destroy, :id => user.id }.to change(User, :count).by(-1)
       flash[:success].should_not be_nil
-      response.should redirect_to(admin_users_path)
+      expect(response).to redirect_to(admin_users_path)
     end
   end
 
