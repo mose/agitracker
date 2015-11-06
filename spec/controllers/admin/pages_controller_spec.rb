@@ -50,13 +50,13 @@ describe Admin::PagesController do
       end
       it "saves the changes" do
         post :update, { :id => @page,  :name => "newname"  }
-        Page.find(@page.id).name.should == "newname"
+        expect(Page.find(@page.id).name).to == "newname"
         expect(flash[:success]).not_to be_nil
         expect(response).to redirect_to(:action => :show, :id => assigns[:page].id)
       end
       it "don't save if name is not all lowercases" do
         post :update, { :id => @page, :name => "NewName"  }
-        Page.find(@page.id).name.should == @page.name
+        expect(Page.find(@page.id).name).to == @page.name
         expect(flash[:success]).not_to be_nil
         expect(response).to be_success
       end

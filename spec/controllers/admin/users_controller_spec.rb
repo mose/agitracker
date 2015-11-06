@@ -51,14 +51,14 @@ describe Admin::UsersController do
       end
       it "saves the changes if all is good" do
         post :update, { :id => @user, :name => "newname" }
-        User.find(@user.id).name.should == "newname"
-        flash[:success].should_not be_nil
+        expect(User.find(@user.id).name).to == "newname"
+        expect(flash[:success]).not_to be_nil
         expect(response).to redirect_to(:action => :show, :id => assigns[:user].id)
       end
       it "refuses to save user if somthing is wrong" do
         post :update, { :id => @user,  :name => ""  }
-        User.find(@user.id).name.should == @user.name
-        flash[:failure].should_not be_nil
+        expect(User.find(@user.id).name).to == @user.name
+        expect(flash[:success]).not_to be_nil
         expect(response).to be_success
       end
     end
@@ -85,7 +85,7 @@ describe Admin::UsersController do
       end
       it "saves created user" do
         expect{ post :create, { name: 'bob', email: 'bob@bobo.eu', password: '12345678' } }.to change(User, :count).by(+1)
-        flash[:success].should_not be_nil
+        expect(flash[:success]).not_to be_nil
         expect(response).to redirect_to(admin_users_path)
       end
     end
@@ -96,7 +96,7 @@ describe Admin::UsersController do
     it "deletes a user" do
       user = create(:user)
       expect{ delete :destroy, :id => user.id }.to change(User, :count).by(-1)
-      flash[:success].should_not be_nil
+      expect(flash[:success]).not_to be_nil
       expect(response).to redirect_to(admin_users_path)
     end
   end

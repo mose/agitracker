@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Page do
-  before :each do
+  before do
     @attr = {
       :name => "name",
       :title => "My title",
@@ -16,15 +16,15 @@ describe Page do
   describe "validations" do
     
     it "requires a non-empty name" do
-      Page.new(@attr.merge(:name => "")).should_not be_valid
+      expect(Page.new(@attr.merge(:name => ""))).not_to be_valid
     end
 
     it "requires the name is only alphanumeric lowercase" do
-      Page.new(@attr.merge(:name => "test Name")).should_not be_valid
+      expect(Page.new(@attr.merge(:name => "test Name"))).not_to be_valid
     end
 
     it "requires the name is less than 16 chars" do
-      Page.new(@attr.merge(:name => "a" * 17)).should_not be_valid
+      expect(Page.new(@attr.merge(:name => "a" * 17))).not_to be_valid
     end
 
   end
