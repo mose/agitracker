@@ -1,14 +1,11 @@
 source 'https://rubygems.org'
 
 gem 'rails', '=4.2.4'
-# Bundle edge Rails instead:
-# gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2'
 gem 'bluecloth'
 gem 'devise'
 gem 'cancancan'
-# gem 'cantango'
 gem 'haml'
 gem 'simple_form'
 gem 'ender-rails', git: 'https://github.com/mose/ender-rails.git'
@@ -23,17 +20,6 @@ gem 'uglifier'
 
 gem 'rails-i18nterface', path: '../rails-i18nterface'
 
-# To use ActiveModel has_secure_password
-#gem 'bcrypt-ruby', git: 'https://github.com/codahale/bcrypt-ruby.git', :require => 'bcrypt'
-
-# Use unicorn as the web server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'ruby-debug19', :require => 'ruby-debug'
 
 group :development do
   gem 'sqlite3'
@@ -46,6 +32,7 @@ group :development do
   gem "awesome_print"
   gem "quiet_assets"
   gem 'pry'
+  gem "byebug"
 end
 
 group :test do
